@@ -1,5 +1,5 @@
 <p align="center">  
-    <img src="./art/logo.png" alt="Logo" width="200" height=200">  
+    <img src="./art/logo.png" alt="Logo" height="300">  
 </p>  
 <h1 align="center">LaraUI</h1>  
 <p align="center">A blade component ui library with livewire support for <a href="https://preline.co"></a>preline</p>  
