@@ -1,4 +1,3 @@
-{{-- confetti/index.blade.php --}}
 @props([
     'uuid' => 'lara-ui-confetti-' . Str::random(8),
     'particleCount' => 100,

@@ -5,7 +5,6 @@
 @checkPluginInstalled('Chart')
 
 <div
-    wire:key="{{ $uuid }}"
     x-data="{
             chart: null,
             settings: @entangle($attributes->wire('model')),
@@ -14,6 +13,7 @@
                 this.chart.render();
             }
         }"
+    wire:key="{{ $uuid }}"
 >
     <div x-ref="chart"></div>
 </div>

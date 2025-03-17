@@ -89,7 +89,6 @@ class LaraUiServiceProvider extends PackageServiceProvider
             if (config('lara-ui.detect_plugins') === true) {
                 return "<?php
             \$isInstalled = app(\CrafterLP2007\LaraUi\LaraUi::class)->hasInstalledPlugin('{$plugin}');
-            \Log::debug('Plugin {$plugin} installation status:', ['installed' => \$isInstalled]);
             if (!\$isInstalled) {
                 throw new \Exception('Plugin {$plugin} is not installed! Please run `php artisan lara-ui:install {$plugin}` to install it and use this component.');
             }

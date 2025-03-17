@@ -31,8 +31,6 @@ The following components are in development:
 
 - [ ] Datepicker
 - [ ] Timepicker
-- [ ] Advanced Select
-- [ ] Modal
 
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

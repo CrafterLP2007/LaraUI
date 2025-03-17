@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-popover-' . \Illuminate\Support\Str::random(8),
     'content' => null,
     'position' => 'top',
     'trigger' => 'click',
@@ -20,7 +19,6 @@
 @endphp
 
 <div
-    id="{{ $uuid }}"
     class="hs-tooltip {{ $positionClass }} {{ $triggerClass }} inline-block"
     {{ $attributes }}
 >

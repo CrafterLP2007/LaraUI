@@ -1,4 +1,3 @@
-{{-- components/offcanvas/content.blade.php --}}
 @props(['title'])
 
 <div

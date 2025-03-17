@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-tooltip-' . \Illuminate\Support\Str::random(8),
     'tip' => null,
     'position' => 'top',
 ])
@@ -14,7 +13,6 @@
 @endphp
 
 <div
-    id="{{ $uuid }}"
     class="hs-tooltip {{ $positionClass }} inline-block"
     {{ $attributes }}
 >

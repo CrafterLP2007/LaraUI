@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-spinner-' . Str::random(8),
     'color' => 'primary',
     'size' => 'default',
     'loading' => null

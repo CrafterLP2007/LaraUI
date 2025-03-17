@@ -1,6 +1,4 @@
-{{-- confetti/trigger.blade.php --}}
 @props([
-    'uuid' => 'lara-ui-confetti-trigger-' . Str::random(8),
     'target' => null
 ])
 

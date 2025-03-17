@@ -3,6 +3,7 @@
 namespace CrafterLP2007\LaraUi;
 
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 class LaraUi {
 
@@ -32,11 +33,11 @@ class LaraUi {
     {
         $plugin = $this->plugins()->get($name);
         if (!$plugin) {
-            throw new \RuntimeException("Plugin '$name' not found");
+            throw new RuntimeException("Plugin '$name' not found");
         }
 
         if (!method_exists($plugin, 'installed')) {
-            throw new \RuntimeException("Plugin '$name' does not implement isInstalled method");
+            throw new RuntimeException("Plugin '$name' does not implement isInstalled method");
         }
 
         return $plugin->installed();
@@ -46,11 +47,11 @@ class LaraUi {
     {
         $plugin = $this->plugins()->get($name);
         if (!$plugin) {
-            throw new \RuntimeException("Plugin '$name' not found");
+            throw new RuntimeException("Plugin '$name' not found");
         }
 
         if (!method_exists($plugin, 'install')) {
-            throw new \RuntimeException("Plugin '$name' does not implement install method");
+            throw new RuntimeException("Plugin '$name' does not implement install method");
         }
 
         $plugin->install();

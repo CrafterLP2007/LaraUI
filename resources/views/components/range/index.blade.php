@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-range-' . uniqid(),
     'label' => null,
     'hint' => null,
     'step' => 1,
@@ -8,10 +7,11 @@
     'showValidation' => true
 ])
 
-@if($label)
-    <label class="block text-sm font-medium dark:text-white" for="{{ $uuid }}">{{ $label }}</label>
-@endif
-<input type="range" {{ $attributes->twMerge('w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden
+<div x-data="{ uuid: Math.random().toString(20).substring(2, 20) }">
+    @if($label)
+        <label class="block text-sm font-medium dark:text-white" x-bind:for="uuid">{{ $label }}</label>
+    @endif
+    <input type="range" {{ $attributes->twMerge('w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden
   [&::-webkit-slider-thumb]:w-2.5
   [&::-webkit-slider-thumb]:h-2.5
   [&::-webkit-slider-thumb]:-mt-0.5
@@ -44,13 +44,15 @@
   [&::-moz-range-track]:w-full
   [&::-moz-range-track]:h-2
   [&::-moz-range-track]:bg-gray-100
-  [&::-moz-range-track]:rounded-full') }} id="{{ $uuid }}" aria-orientation="horizontal" min="{{ $min }}" max="{{ $max }}" step="{{ $step }}">
+  [&::-moz-range-track]:rounded-full') }} x-bind:id="uuid" aria-orientation="horizontal" min="{{ $min }}" max="{{ $max }}" step="{{ $step }}">
 
-@if($hint)
-    <p class="mt-2 text-sm text-gray-500 dark:text-neutral-400">{{ $hint }}</p>
-@endif
+    @if($hint)
+        <p class="mt-2 text-sm text-gray-500 dark:text-neutral-400">{{ $hint }}</p>
+    @endif
 
-@if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()) && $showValidation)
-    <div
-        class="text-red-600 text-sm">{{ $errors->first($attributes->whereStartsWith('wire:model')->first()) }}</div>
-@endif
+    @if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()) && $showValidation)
+        <div
+            class="text-red-600 text-sm">{{ $errors->first($attributes->whereStartsWith('wire:model')->first()) }}</div>
+    @endif
+
+</div>

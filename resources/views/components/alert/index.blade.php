@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-alert-' . Str::random(8),
     'variant' => 'solid',
     'color' => 'dark',
     'dismissible' => false,

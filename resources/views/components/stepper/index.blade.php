@@ -1,11 +1,10 @@
-{{-- index.blade.php --}}
 @props([
-    'uuid' => 'lara-ui-stepper-' . Str::random(8),
     'currentStep' => 1,
 ])
 
 <div {{ $attributes->merge(['class' => 'p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800']) }}
      x-data="{
+        uuid: Math.random().toString(20).substring(2, 20),
         step: {{ $attributes->wire('model')->value() ? '$wire.' . $attributes->wire('model')->value() : $currentStep }},
         totalSteps: 0,
         init() {
@@ -46,7 +45,7 @@
             });
         }
      }">
-    <div class="stepper-{{ $uuid }}">
+    <div :class="`stepper-${uuid}`">
         <ul class="relative flex flex-row gap-x-2 mb-4">
             {{ $slot }}
         </ul>

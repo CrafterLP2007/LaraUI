@@ -1,16 +1,14 @@
 @props([
-    'uuid' => 'lara-ui-password' . \Illuminate\Support\Str::random(8),
     'label' => null,
-    'placeholder' => 'Password',
     'hint' => null,
     'cornerHint' => null,
     'showValidation' => true,
 ])
 
-<div class="max-w-sm">
+<div class="max-w-sm" x-data="{ uuid: Math.random().toString(20).substring(2, 20) }">
     @if($label)
         <div class="flex justify-between items-center mb-2">
-            <label for="{{ $uuid }}" class="block text-sm dark:text-white">{{ $label }}</label>
+            <label x-bind:for="uuid" class="block text-sm dark:text-white">{{ $label }}</label>
             @if($cornerHint)
                 <span class="text-sm text-gray-500 dark:text-neutral-400">{{ $cornerHint }}</span>
             @endif
@@ -19,11 +17,9 @@
 
     <div class="relative" x-data="{ show: false }">
         <input
-            id="{{ $uuid }}"
+            x-bind:id="uuid"
             :type="show ? 'text' : 'password'"
             {{ $attributes->twMerge('py-2.5 sm:py-3 ps-4 pe-10 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600') }}
-            placeholder="{{ $placeholder }}"
-            aria-label="{{ $placeholder }}"
         >
         <button
             type="button"

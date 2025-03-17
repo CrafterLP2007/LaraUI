@@ -1,4 +1,3 @@
-// packages/LaraUI/resources/views/components/tree/file.blade.php
 @props([
     'item' => [],
 ])

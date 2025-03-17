@@ -1,26 +1,76 @@
-@php use Illuminate\Support\Collection; @endphp
 @props([
-    'uuid' => 'lara-ui-advanced-select-' . \Illuminate\Support\Str::random(8),
-    'variant' => 'default',
     'label' => null,
-    'hint' => null,
     'cornerHint' => null,
+    'hint' => null,
     'showValidation' => true,
-    'placeholder' => null,
-
-    'search' => false,
-    'searchPlaceholder' => 'Search...',
-
     'options' => [],
+    'optionValue' => 'id',
     'optionLabel' => 'name',
-    'optionValue' => 'id'
+    'multiple' => false,
 ])
 
-<div>
+<div x-data="{
+    uuid: Math.random().toString(20).substring(2, 20),
+    open: false,
+    selectedValues: [],
+    options: {{ json_encode($options) }},
+
+    init() {
+        const modelName = '{{ $attributes->whereStartsWith('wire:model')->first() }}';
+        if (modelName) {
+            $nextTick(() => {
+                let value = $wire.get(modelName.replace('wire:model', '').replace('.live', '').replace('.defer', '').trim());
+                if (value) {
+                    this.selectedValues = {{ $multiple ? 'true' : 'false' }} ? (Array.isArray(value) ? value : []) : (Array.isArray(value) ? [value[0]] : [value]);
+                }
+            });
+
+            if (window.Livewire) {
+                $wire.$watch(modelName.replace('wire:model', '').replace('.live', '').replace('.defer', '').trim(), value => {
+                    if (value) {
+                        this.selectedValues = {{ $multiple ? 'true' : 'false' }} ? (Array.isArray(value) ? value : []) : (Array.isArray(value) ? [value[0]] : [value]);
+                    } else {
+                        this.selectedValues = [];
+                    }
+                });
+            }
+        }
+    },
+
+    select(value) {
+        if ({{ $multiple ? 'true' : 'false' }}) {
+            const index = this.selectedValues.indexOf(value);
+            if (index === -1) {
+                this.selectedValues.push(value);
+            } else {
+                this.selectedValues.splice(index, 1);
+            }
+        } else {
+            this.selectedValues = [value];
+            this.open = false;
+        }
+
+        const modelName = '{{ $attributes->whereStartsWith('wire:model')->first() }}';
+        if (modelName && window.Livewire) {
+            const finalValue = {{ $multiple ? 'true' : 'false' }} ? this.selectedValues : this.selectedValues[0] || null;
+            $wire.set(modelName.replace('wire:model', '').replace('.live', '').replace('.defer', '').trim(), finalValue);
+        }
+    },
+
+    getSelectedLabels() {
+        return this.selectedValues
+            .map(value => this.options.find(opt => opt['{{ $optionValue }}'] == value)?.['{{ $optionLabel }}'])
+            .filter(label => label)
+            .join(', ') || '{{ __('Choose') }}';
+    }
+}">
     @if($label)
         <div class="flex justify-between items-center mb-2">
-            <label for="{{ $uuid }}" class="block text-sm font-medium dark:text-white">
+            <label x-bind:for="uuid" class="block text-sm font-medium dark:text-white">
                 {{ $label }}
+                @if($attributes->has('required'))
+                    <span class="text-red-500">*</span>
+                @endif
             </label>
             @if($cornerHint)
                 <span class="text-sm text-gray-500 dark:text-neutral-400">{{ $cornerHint }}</span>
@@ -28,110 +78,58 @@
         </div>
     @endif
 
-    <!-- Select -->
-    <div
-        x-data="{
-            open: false,
-            value: null,
-            text: '',
-            init() {
-                // Get Preline Select instance
-                const select = HSSelect.getInstance(this.$refs.select);
-
-                // Check if we're in a Livewire context
-                const hasWireModel = {{ $attributes->whereStartsWith('wire:model')->isNotEmpty() ? 'true' : 'false' }};
-
-                if (hasWireModel) {
-                    // Get initial value from Livewire
-                    const modelName = '{{ $attributes->wire('model')->value() }}';
-
-                    try {
-                        const initialValue = $wire.get(modelName);
-
-                        if (initialValue !== undefined && initialValue !== null) {
-                            this.value = initialValue;
-                            select.selectOption(String(initialValue));
-                        }
-
-                        // Setup change listener for HSSelect
-                        select.on('change', (value) => {
-                            const numValue = !isNaN(value) && value !== '' ? Number(value) : value;
-                            $wire.set(modelName, numValue);
-                            this.value = numValue;
-                        });
-
-                        // Watch for Livewire updates
-                        $wire.$watch(modelName, (newValue) => {
-                            if (newValue !== this.value) {
-                                this.value = newValue;
-                                if (newValue !== null && newValue !== undefined && newValue !== '') {
-                                    select.selectOption(String(newValue));
-                                } else {
-                                    select.deselectAllOptions();
-                                }
-                            }
-                        });
-                    } catch (e) {
-                        // Fallback for non-Livewire contexts
-                        select.on('change', (value) => {
-                            this.value = !isNaN(value) && value !== '' ? Number(value) : value;
-                        });
-                    }
-                } else {
-                    // Regular behavior for non-Livewire
-                    select.on('change', (value) => {
-                        this.value = !isNaN(value) && value !== '' ? Number(value) : value;
-                    });
-                }
-            }
-        }"
-    >
-        <select
-            id="{{ $uuid }}"
-            x-ref="select"
-            {{ $attributes->whereDoesntStartWith('wire:model') }}
-            data-hs-select='{
-                "placeholder": "{{ $placeholder }}",
-                "hasSearch": {{ $search ? 'true' : 'false' }},
-                "searchPlaceholder": "{{ $searchPlaceholder }}",
-                "searchClasses": "block w-full sm:text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-1 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 py-1.5 sm:py-2 px-3",
-                "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 dark:bg-neutral-900",
-                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:focus:outline-hidden dark:focus:ring-1 dark:focus:ring-neutral-600",
-                "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
-                "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
-                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
-                "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-            }'
-            class="hidden"
+    <div class="relative">
+        <button
+            type="button"
+            @click="open = !open"
+            class="relative w-full py-2.5 px-4 text-left text-sm text-gray-800 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            {{ $attributes->except(['wire:model', 'wire:model.live', 'wire:model.defer']) }}
         >
-            @php
-                // Handle different option types (array, Collection, etc.)
-                $normalizedOptions = $options;
-                if ($options instanceof Collection) {
-                    $normalizedOptions = $options->all();
-                } elseif (!is_array($options)) {
-                    $normalizedOptions = [];
-                }
-            @endphp
+            <span x-text="getSelectedLabels()"></span>
+            <span class="absolute end-3 top-1/2 -translate-y-1/2">
+                <svg class="size-3.5 text-gray-500 dark:text-neutral-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"></path>
+                    <path d="m7 9 5-5 5 5"></path>
+                </svg>
+            </span>
+        </button>
 
-            @foreach($normalizedOptions as $option)
-                @php
-                    $optValue = is_array($option) ? ($option[$optionValue] ?? '') : (is_object($option) ? ($option->{$optionValue} ?? '') : $option);
-                    $optLabel = is_array($option) ? ($option[$optionLabel] ?? $optValue) : (is_object($option) ? ($option->{$optionLabel} ?? $optValue) : $option);
-                    $disabled = is_array($option) ? ($option['disabled'] ?? false) : (is_object($option) ? ($option->disabled ?? false) : false);
-                @endphp
-                <option value="{{ $optValue }}" {{ $disabled ? 'disabled' : '' }}>{{ $optLabel }}</option>
-            @endforeach
-        </select>
+        <div
+            x-show="open"
+            @click.outside="open = false"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter-end="transform opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95"
+            class="absolute z-50 mt-1 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700"
+            style="display: none;"
+        >
+            <template x-for="(option, index) in options" :key="index">
+                <div
+                    @click="select(option['{{ $optionValue }}'])"
+                    class="cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800"
+                    :class="{ 'bg-gray-100 dark:bg-neutral-800': selectedValues.includes(option['{{ $optionValue }}']) }"
+                >
+                    <div class="flex justify-between items-center w-full">
+                        <span x-text="option['{{ $optionLabel }}']"></span>
+                        <template x-if="selectedValues.includes(option['{{ $optionValue }}'])">
+                            <svg class="shrink-0 size-3.5 text-blue-600 dark:text-blue-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"></path>
+                            </svg>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
     </div>
-    <!-- End Select -->
 
     @if($hint)
         <p class="mt-2 text-sm text-gray-500 dark:text-neutral-400">{{ $hint }}</p>
     @endif
 
-    @if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()) && $showValidation)
+    @if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()))
         <div class="text-red-600 text-sm">{{ $errors->first($attributes->whereStartsWith('wire:model')->first()) }}</div>
     @endif
 </div>

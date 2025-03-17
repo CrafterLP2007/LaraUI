@@ -1,5 +1,4 @@
 @props([
-    'uuid' => 'lara-ui-combobox-' . Str::random(8),
     'label' => null,
     'options' => [],
     'optionValue' => 'id',
@@ -10,6 +9,7 @@
 
 <div
     x-data="{
+        uuid: Math.random().toString(20).substring(2, 20),
         open: false,
         selectedValue: null,
         searchTerm: '',
@@ -64,11 +64,11 @@
         }
     }"
     class="relative w-full"
-    id="{{ $uuid }}"
+    x-bind:id="uuid"
 >
     @if($label)
         <div class="flex justify-between items-center mb-2">
-            <label for="{{ $uuid }}-input" class="block text-sm font-medium dark:text-white">
+            <label x-bind:for="uuid" class="block text-sm font-medium dark:text-white">
                 {{ $label }}
                 @if($attributes->has('required'))
                     <span class="text-red-500">*</span>
@@ -83,7 +83,7 @@
     <div class="relative">
         <input
             x-ref="trigger"
-            id="{{ $uuid }}-input"
+            x-bind:id="uuid"
             type="text"
             x-model="searchTerm"
             @input="open = true"

@@ -1,19 +1,20 @@
 @props([
-    'uuid' => 'lara-ui-rating-' . Str::random(8),
     'max' => 5,
 ])
 
-<div class="flex flex-row-reverse justify-end items-center">
+<div class="flex flex-row-reverse justify-end items-center" x-data="{
+        uuid: Math.random().toString(20).substring(2, 20)
+    }">
     @for($i = $max; $i >= 1; $i--)
         <input
-            id="{{ $uuid }}-{{ $i }}"
+            x-bind:id="uuid + '-' + {{ $i }}"
             type="radio"
             {{ $attributes->twMerge('peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0') }}
-            name="{{ $uuid }}"
+            x-bind:name="uuid"
             value="{{ $i }}"
         >
         <label
-            for="{{ $uuid }}-{{ $i }}"
+            x-bind:for="uuid + '-' + {{ $i }}"
             class="peer-checked:text-yellow-400 text-gray-300 pointer-events-none dark:peer-checked:text-yellow-600 dark:text-neutral-600"
         >
             @if($slot->isEmpty())
