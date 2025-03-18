@@ -2,9 +2,10 @@
 
 namespace CrafterLP2007\LaraUi\Builder;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 
-trait NotificationBuilder
+class NotificationBuilder implements Arrayable
 {
     public string $id = "";
     public string $variant = "solid";
@@ -17,11 +18,19 @@ trait NotificationBuilder
     public bool $navigate = false;
     public int $timeout = 5;
 
-    public function make(string $id = ""): self
+    public function __construct($id)
     {
-        $this->id = "lara-ui-notification-" . Str::random(8);
+        if (empty($id)) {
+            $this->id = "lara-ui-notification-" . Str::orderedUuid();
+            return;
+        }
 
-        return $this;
+        $this->id = $id;
+    }
+
+    public static function make(string $id = ""): static
+    {
+        return new static($id);
     }
 
     public function solid(): static
@@ -151,6 +160,11 @@ trait NotificationBuilder
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function toArray(): array
     {
         return [
@@ -164,19 +178,38 @@ trait NotificationBuilder
             'link' => $this->link,
             'navigate' => $this->navigate,
             'timeout' => $this->timeout,
-            'time' => now()
         ];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $static = static::make($data['id'] ?? Str::random());
+
+        if (
+            ($static::class !== self::class) &&
+            (get_called_class() === self::class)
+        ) {
+            return $static::fromArray($data);
+        }
+
+        $static->title = $data['title'] ?? "";
+        $static->message = $data['message'] ?? "";
+        $static->icon = $data['icon'] ?? "";
+        $static->variant = $data['variant'] ?? "solid";
+        $static->color = $data['color'] ?? "white";
+        $static->dismissable = $data['dismissable'] ?? false;
+        $static->link = $data['link'] ?? "";
+        $static->navigate = $data['navigate'] ?? false;
+        $static->timeout = $data['timeout'] ?? 5;
+
+        return $static;
     }
 
     public function send(): void
     {
-        $notification = $this->toArray();
-
-        if (empty($this->id)) {
-            $this->make();
-            $notification['id'] = $this->id;
-        }
-
-        $this->dispatch('create-notification', $notification);
+        session()->push(
+            'lara-ui.notifications',
+            $this->toArray()
+        );
     }
 }

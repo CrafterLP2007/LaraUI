@@ -1,9 +1,10 @@
 @props([
-    'id',
+    'id' => 'lara-ui-modal-' . Str::random(8),
     'position' => 'centered',
     'size' => 'small',
-    'animation' => 'none',
-    'backgroundClasses' => ''
+    'animation' => 'scale',
+    'backgroundClasses' => '',
+    'alwaysOpen' => false,
 ])
 
 @inject('modalService', 'CrafterLP2007\LaraUi\Services\LaraUI\ModalCvaService')

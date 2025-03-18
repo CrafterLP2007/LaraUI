@@ -1,6 +1,6 @@
 @props([
     'target',
-    'label' => 'Open modal'
+    'action' => 'open'
 ])
 
 <button
@@ -9,7 +9,14 @@
     aria-haspopup="dialog"
     aria-expanded="false"
     aria-controls="{{ $target }}"
-    data-hs-overlay="#{{ $target }}"
+
+    @if($action === 'open')
+        data-hs-overlay="#{{ $target }}"
+    @elseif($action === 'close')
+        data-hs-overlay-close="#{{ $target }}"
+    @else
+        @php throw new Exception("Action " . $action . " not available") @endphp
+    @endif
 >
-    {{ $label }}
+    {{ $slot }}
 </button>
