@@ -4,15 +4,14 @@ namespace CrafterLP2007\LaraUi;
 
 use CrafterLP2007\LaraUi\Commands\InstallPluginCommand;
 use CrafterLP2007\LaraUi\Commands\ReloadCommand;
-use CrafterLP2007\LaraUi\Livewire\Modal\Modal;
 use CrafterLP2007\LaraUi\Livewire\Modal\ModalComponent;
 use CrafterLP2007\LaraUi\Livewire\Notification\Notifications;
-use CrafterLP2007\LaraUi\View\Components\Chart;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Component;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+
 use function Livewire\on;
 use function Livewire\store;
 
@@ -27,10 +26,10 @@ class LaraUiServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasCommands([
                 InstallPluginCommand::class,
-                ReloadCommand::class
+                ReloadCommand::class,
             ]);
 
-        //$this->registerComponents();
+        // $this->registerComponents();
         $this->registerBladeDirectives();
     }
 
@@ -44,7 +43,7 @@ class LaraUiServiceProvider extends PackageServiceProvider
         Livewire::component('notifications', Notifications::class);
 
         on('dehydrate', function (Component $component) {
-            if (!Livewire::isLivewireRequest()) {
+            if (! Livewire::isLivewireRequest()) {
                 return;
             }
 
@@ -100,7 +99,7 @@ class LaraUiServiceProvider extends PackageServiceProvider
                 }
 
                 // Use first file as fallback
-                if (!$mainFile && !empty($files)) {
+                if (! $mainFile && ! empty($files)) {
                     $mainFile = pathinfo(basename($files[0]), PATHINFO_FILENAME);
                 }
 

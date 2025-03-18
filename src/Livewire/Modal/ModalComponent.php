@@ -39,9 +39,8 @@ class ModalComponent extends Component
         $id = md5($component.serialize($arguments));
 
         $arguments = collect($arguments)
-            ->merge($this->resolveComponentProps($arguments, new $componentClass()))
+            ->merge($this->resolveComponentProps($arguments, new $componentClass))
             ->all();
-
 
         $this->components[$id] = [
             'name' => $component,
@@ -52,7 +51,6 @@ class ModalComponent extends Component
                 'position' => 'center',
             ], $modalAttributes),
         ];
-
 
         $this->activeComponent = $id;
 
@@ -83,10 +81,10 @@ class ModalComponent extends Component
             return $parameterValue;
         }
 
-        if(enum_exists($parameterClassName)){
+        if (enum_exists($parameterClassName)) {
             $enum = $parameterClassName::tryFrom($parameterValue);
 
-            if($enum !== null){
+            if ($enum !== null) {
                 return $enum;
             }
         }
@@ -94,7 +92,7 @@ class ModalComponent extends Component
         $instance = app()->make($parameterClassName);
 
         if (! $model = $instance->resolveRouteBinding($parameterValue)) {
-            throw (new ModelNotFoundException())->setModel(get_class($instance), [$parameterValue]);
+            throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
         }
 
         return $model;
@@ -118,7 +116,7 @@ class ModalComponent extends Component
     public function render()
     {
         return view('lara-ui::livewire.components.modals.modal', [
-            'js' => __DIR__ . '../../../../resources/js/modal/modal.js'
+            'js' => __DIR__.'../../../../resources/js/modal/modal.js',
         ]);
     }
 }

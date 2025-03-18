@@ -16,7 +16,7 @@ class ModalCvaService
                 'variants' => [
                     'position' => [
                         'top' => '', // Has no class
-                        'centered' => 'min-h-[calc(100%-56px)] flex items-center'
+                        'centered' => 'min-h-[calc(100%-56px)] flex items-center',
                     ],
 
                     'size' => [
@@ -28,9 +28,9 @@ class ModalCvaService
                     'animation' => [
                         'scale' => 'hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200',
                         'slide-down' => 'hs-overlay-animation-target hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all',
-                        'slide-up' => 'hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-14 opacity-0 ease-out transition-all'
-                    ]
-                ]
+                        'slide-up' => 'hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-14 opacity-0 ease-out transition-all',
+                    ],
+                ],
             ]
         );
     }

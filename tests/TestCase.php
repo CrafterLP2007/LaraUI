@@ -2,9 +2,9 @@
 
 namespace CrafterLP2007\LaraUi\Tests;
 
+use CrafterLP2007\LaraUi\LaraUiServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use CrafterLP2007\LaraUi\LaraUiServiceProvider;
 
 class TestCase extends Orchestra
 {

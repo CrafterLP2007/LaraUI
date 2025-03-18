@@ -2,15 +2,13 @@
 
 namespace CrafterLP2007\LaraUi\Services\Plugins;
 
-use PHPStan\ExtensionInstaller\Plugin;
-
 abstract class PluginService
 {
     protected string $name = '';
 
-    public abstract function install(): void;
+    abstract public function install(): void;
 
-    public abstract function installed(): bool;
+    abstract public function installed(): bool;
 
     public function getName(): string
     {

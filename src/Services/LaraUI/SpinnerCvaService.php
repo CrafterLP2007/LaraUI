@@ -10,7 +10,7 @@ class SpinnerCvaService
     {
         return ClassVarianceAuthority::new(
             [
-                'animate-spin inline-block border-3 border-current border-t-transparent rounded-full'
+                'animate-spin inline-block border-3 border-current border-t-transparent rounded-full',
             ],
             [
                 'variants' => [
@@ -24,14 +24,14 @@ class SpinnerCvaService
                         'indigo' => 'text-indigo-600',
                         'purple' => 'text-purple-600',
                         'pink' => 'text-pink-600',
-                        'orange' => 'text-orange-600'
+                        'orange' => 'text-orange-600',
                     ],
 
                     'size' => [
                         'small' => 'size-4',
                         'default' => 'size-6',
-                        'large' => 'size-8'
-                    ]
+                        'large' => 'size-8',
+                    ],
                 ],
             ]
         );
