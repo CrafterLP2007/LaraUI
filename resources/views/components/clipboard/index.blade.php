@@ -1,17 +1,19 @@
 @props([
-    'text' => ''
+    'text' => '',
+    'timeout' => 3000,
 ])
 
 <button
     type="button"
     x-data="{
         showSuccess: false,
+        timeout: {{ $timeout }},
         async copyToClipboard() {
             await navigator.clipboard.writeText(@js($text));
             this.showSuccess = true;
             setTimeout(() => {
                 this.showSuccess = false;
-            }, 3000);
+            }, this.timeout);
         }
     }"
     @click="copyToClipboard"

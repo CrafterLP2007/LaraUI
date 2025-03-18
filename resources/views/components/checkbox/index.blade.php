@@ -18,7 +18,7 @@
     @endif
 
     @if($label && !$attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()))
-        <label x-bind:for="uuid" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">{{ $label }}</label>
+        <label x-bind:for="uuid" class="text-sm text-gray-500 ms-3 dark:text-neutral-500">{{ $label }}</label>
     @endif
 </div>
 

@@ -16,7 +16,7 @@
     <input x-bind:id="uuid" type="color" {{ $attributes->twMerge('p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700" id="hs-color-input') }} {{ $attributes }}>
 
     @if($hint)
-        <p class="mt-2 text-sm text-gray-500 dark:text-neutral-400">{{ $hint }}</p>
+        <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">{{ $hint }}</p>
     @endif
 
     @if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()) && $showValidation)

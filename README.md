@@ -29,8 +29,8 @@ Not available yet.
 ## 📖 Todo
 The following components are in development:
 
-- [ ] Datepicker
-- [ ] Timepicker
+- [ ] Datepicker | Currently not working because of a bug in the datepicker/preline library
+- [ ] Toasts | Currently not working
 
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

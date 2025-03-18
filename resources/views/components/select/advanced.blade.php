@@ -82,7 +82,7 @@
         <button
             type="button"
             @click="open = !open"
-            class="relative w-full py-2.5 px-4 text-left text-sm text-gray-800 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            class="relative w-full py-2.5 px-4 text-left text-sm text-gray-800 bg-white border border-gray-200 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300"
             {{ $attributes->except(['wire:model', 'wire:model.live', 'wire:model.defer']) }}
         >
             <span x-text="getSelectedLabels()"></span>
@@ -126,7 +126,7 @@
     </div>
 
     @if($hint)
-        <p class="mt-2 text-sm text-gray-500 dark:text-neutral-400">{{ $hint }}</p>
+        <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">{{ $hint }}</p>
     @endif
 
     @if($attributes->whereStartsWith('wire:model')->first() && $errors->has($attributes->whereStartsWith('wire:model')->first()))
