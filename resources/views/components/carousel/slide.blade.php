@@ -1,10 +1,5 @@
-@props([
-    'uuid' => 'lara-ui-carousel-slide-' . Str::random(8),
-    'background' => 'bg-gray-100 dark:bg-neutral-900'
-])
-
-<div class="hs-carousel-slide">
-    <div class="flex justify-center h-full {{ $background }} p-6">
+<div class="carousel-slide flex-shrink-0 w-full">
+    <div {{ $attributes->twMerge('flex justify-center h-full bg-gray-100 dark:bg-neutral-900 p-6') }}>
         {{ $slot }}
     </div>
 </div>

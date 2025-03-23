@@ -3,8 +3,11 @@
     'zoom' => 14,
     'minZoom' => 2,
     'maxZoom' => 19,
-    'markers' => []
+    'markers' => [],
+    'map' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 ])
+
+@checkPluginInstalled('Map')
 
 <div
     x-data="{
@@ -56,7 +59,7 @@
                     maxBoundsViscosity: 1.0
                 });
 
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                L.tileLayer('{{ $map }}', {
                     maxZoom: this.maxZoom,
                     minZoom: this.minZoom,
                     attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

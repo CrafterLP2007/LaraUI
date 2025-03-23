@@ -1,11 +1,13 @@
 @props([
     'currentStep' => 1,
+    'goToStepByClick' => false,
 ])
 
 <div {{ $attributes->merge(['class' => 'p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800']) }}
      x-data="{
         uuid: Math.random().toString(20).substring(2, 20),
         step: {{ $attributes->wire('model')->value() ? '$wire.' . $attributes->wire('model')->value() : $currentStep }},
+        goToStepByClick: {{ $goToStepByClick ? 'true' : 'false' }},
         totalSteps: 0,
         init() {
             this.totalSteps = this.$el.querySelectorAll('[data-step-index]').length;

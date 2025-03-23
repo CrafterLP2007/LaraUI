@@ -1,16 +1,20 @@
 @props(['item'])
 
-<div class="{{ $item['isDir'] ? 'hs-accordion' : '' }} {{ isset($item['isDir']) && $item['isDir'] && (isset($item['collapsed']) && !$item['collapsed']) ? 'active' : '' }}"
-     role="treeitem"
-     id="hs-cco-tree-heading-{{ $item['value'] }}"
-     data-hs-tree-view-item='@json($item)'>
-    <div class="py-0.5 rounded-md flex items-center gap-x-0.5 w-full hs-tree-view-selected:bg-gray-100 dark:hs-tree-view-selected:bg-neutral-700">
+<div x-data="{
+        isOpen: {{ isset($item['collapsed']) && !$item['collapsed'] ? 'true' : 'false' }},
+        isSelected: false
+    }"
+     class="{{ $item['isDir'] ? 'relative' : '' }}"
+     role="treeitem">
+    <div class="py-0.5 rounded-md flex items-center gap-x-0.5 w-full"
+         :class="{ 'bg-gray-100 dark:bg-neutral-700': isSelected }"
+         @click="isSelected = true; $dispatch('tree-item-selected', {{ json_encode($item) }})">
+
         @if($item['isDir'])
             <button type="button"
-                    class="hs-accordion-toggle size-6 flex justify-center items-center hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                    aria-controls="hs-cco-tree-collapse-{{ $item['value'] }}"
-                    aria-expanded="{{ isset($item['collapsed']) && !$item['collapsed'] }}">
-                <svg class="size-4 text-gray-800 dark:text-neutral-200 block"
+                    class="size-6 flex justify-center items-center hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    @click.stop="isOpen = !isOpen">
+                <svg class="size-4 text-gray-800 dark:text-neutral-200"
                      xmlns="http://www.w3.org/2000/svg"
                      width="24"
                      height="24"
@@ -21,20 +25,18 @@
                      stroke-linecap="round"
                      stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <line class="hs-accordion-active:hidden" x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x-show="!isOpen" x1="12" y1="5" x2="12" y2="19"></line>
                 </svg>
             </button>
         @else
             <div class="size-6"></div>
         @endif
 
-        <div class="grow px-1.5 rounded-md cursor-pointer" data-hs-tree-view-select>
+        <div class="grow px-1.5 rounded-md cursor-pointer">
             <div class="flex items-center gap-x-3">
                 @if($item['isDir'])
                     <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
                          xmlns="http://www.w3.org/2000/svg"
-                         width="24"
-                         height="24"
                          viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
@@ -46,8 +48,6 @@
                 @else
                     <svg class="shrink-0 size-4 text-gray-500 dark:text-neutral-500"
                          xmlns="http://www.w3.org/2000/svg"
-                         width="24"
-                         height="24"
                          viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
@@ -66,14 +66,12 @@
     </div>
 
     @if ($item['isDir'])
-        <div id="hs-cco-tree-collapse-{{ $item['value'] }}"
-             class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 {{ isset($item['collapsed']) && !$item['collapsed'] ? 'block' : 'hidden' }}"
-             aria-labelledby="hs-cco-tree-heading-{{ $item['value'] }}">
-            <div class="ps-7 relative before:absolute before:top-0 before:start-3 before:w-0.5 before:-ms-px before:h-full before:bg-gray-100 dark:before:bg-neutral-700">
-                @foreach ($item['children'] as $child)
-                    <x-lara-ui::tree.item :item="$child" />
-                @endforeach
-            </div>
+        <div x-show="isOpen"
+             x-collapse
+             class="ps-7 relative before:absolute before:top-0 before:start-3 before:w-0.5 before:-ms-px before:h-full before:bg-gray-100 dark:before:bg-neutral-700">
+            @foreach ($item['children'] as $child)
+                <x-lara-ui::tree.item :item="$child" />
+            @endforeach
         </div>
     @endif
 </div>

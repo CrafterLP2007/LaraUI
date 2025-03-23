@@ -1,11 +1,11 @@
-{{-- step.blade.php --}}
 @props([
     'index',
 ])
 
-<li class="flex items-center gap-x-2 shrink basis-0 flex-1 group cursor-pointer"
+<li class="flex items-center gap-x-2 shrink basis-0 flex-1 group"
+    :class="goToStepByClick ? 'cursor-pointer' : ''"
     data-step-index="{{ $index }}"
-    @click="goToStep({{ $index }})">
+    @click="if (goToStepByClick) goToStep({{ $index }})">
     <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
         <span x-bind:class="{
             'size-7 flex justify-center items-center shrink-0 font-medium rounded-full': true,

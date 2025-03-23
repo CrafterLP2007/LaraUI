@@ -130,7 +130,7 @@
                                     :class="{ 'bg-blue-600 text-white': ampm === 'am' }"
                                 >
                                     <input type="radio" id="ampm-am" name="ampm" value="am" x-model="ampm" class="sr-only">
-                                    <span class="block">AM</span>
+                                    <span class="block">{{ __('lara-ui::time.am') }}</span>
                                 </label>
 
                                 <label
@@ -139,7 +139,7 @@
                                     :class="{ 'bg-blue-600 text-white': ampm === 'pm' }"
                                 >
                                     <input type="radio" id="ampm-pm" name="ampm" value="pm" x-model="ampm" class="sr-only">
-                                    <span class="block">PM</span>
+                                    <span class="block">{{ __('lara-ui::time.pm') }}</span>
                                 </label>
                             </div>
                         @endunless
@@ -152,7 +152,7 @@
                             x-on:click="setCurrentTime()"
                             class="w-full py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700"
                         >
-                            Now
+                            {{ __('lara-ui::time.now_button') }}
                         </button>
                     </div>
                 </div>
