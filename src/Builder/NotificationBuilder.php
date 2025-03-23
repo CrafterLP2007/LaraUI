@@ -7,28 +7,38 @@ use Illuminate\Support\Str;
 
 class NotificationBuilder implements Arrayable
 {
-    public string $id = "";
-    public string $variant = "solid";
-    public string $color = "white";
-    public string $title = "";
-    public string $message = "";
-    public string $icon = "";
+    public string $id = '';
+
+    public string $variant = 'solid';
+
+    public string $color = 'white';
+
+    public string $title = '';
+
+    public string $message = '';
+
+    public string $icon = '';
+
     public bool $dismissable = false;
-    public string $link = "";
+
+    public string $link = '';
+
     public bool $navigate = false;
+
     public int $timeout = 5;
 
     public function __construct($id)
     {
         if (empty($id)) {
-            $this->id = "lara-ui-notification-" . Str::orderedUuid();
+            $this->id = 'lara-ui-notification-'.Str::orderedUuid();
+
             return;
         }
 
         $this->id = $id;
     }
 
-    public static function make(string $id = ""): static
+    public static function make(string $id = ''): static
     {
         return new static($id);
     }
@@ -49,49 +59,49 @@ class NotificationBuilder implements Arrayable
 
     public function dark(): static
     {
-        $this->color("dark");
+        $this->color('dark');
 
         return $this;
     }
 
     public function secondary(): static
     {
-        $this->color("secondary");
+        $this->color('secondary');
 
         return $this;
     }
 
     public function info(): static
     {
-        $this->color("info");
+        $this->color('info');
 
         return $this;
     }
 
     public function success(): static
     {
-        $this->color("success");
+        $this->color('success');
 
         return $this;
     }
 
     public function danger(): static
     {
-        $this->color("danger");
+        $this->color('danger');
 
         return $this;
     }
 
     public function warning(): static
     {
-        $this->color("warning");
+        $this->color('warning');
 
         return $this;
     }
 
     public function light(): static
     {
-        $this->color("light");
+        $this->color('light');
 
         return $this;
     }
@@ -192,13 +202,13 @@ class NotificationBuilder implements Arrayable
             return $static::fromArray($data);
         }
 
-        $static->title = $data['title'] ?? "";
-        $static->message = $data['message'] ?? "";
-        $static->icon = $data['icon'] ?? "";
-        $static->variant = $data['variant'] ?? "solid";
-        $static->color = $data['color'] ?? "white";
+        $static->title = $data['title'] ?? '';
+        $static->message = $data['message'] ?? '';
+        $static->icon = $data['icon'] ?? '';
+        $static->variant = $data['variant'] ?? 'solid';
+        $static->color = $data['color'] ?? 'white';
         $static->dismissable = $data['dismissable'] ?? false;
-        $static->link = $data['link'] ?? "";
+        $static->link = $data['link'] ?? '';
         $static->navigate = $data['navigate'] ?? false;
         $static->timeout = $data['timeout'] ?? 5;
 

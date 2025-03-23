@@ -10,7 +10,7 @@ class ButtonCvaService
     {
         return ClassVarianceAuthority::new(
             [
-                'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none cursor-pointer'
+                'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
             ],
             [
                 'variants' => [
@@ -63,7 +63,7 @@ class ButtonCvaService
                         'primary' => 'py-0 px-0 border-0 text-blue-600 hover:text-blue-800 focus:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400 font-semibold',
                         'secondary' => 'py-0 px-0 border-0 text-white hover:text-white/80 focus:text-white/80 font-semibold',
                         'white' => 'py-0 px-0 border-0 text-gray-800 hover:text-blue-600 focus:text-blue-600 dark:text-white dark:hover:text-white/70 dark:focus:text-white/70 font-semibold',
-                    ]
+                    ],
                 ],
             ]
         );

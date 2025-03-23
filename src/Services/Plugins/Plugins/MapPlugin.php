@@ -5,6 +5,7 @@ namespace CrafterLP2007\LaraUi\Services\Plugins\Plugins;
 use CrafterLP2007\LaraUi\Services\Plugins\PluginService;
 use Illuminate\Support\Facades\Process;
 use RuntimeException;
+
 use function Laravel\Prompts\progress;
 
 class MapPlugin extends PluginService
@@ -21,8 +22,8 @@ class MapPlugin extends PluginService
             callback: function ($step, $label) {
                 $result = $step();
 
-                if ($label === 'Installing package' && !$result->successful()) {
-                    throw new RuntimeException('Failed to install leaflet: ' . $result->errorOutput());
+                if ($label === 'Installing package' && ! $result->successful()) {
+                    throw new RuntimeException('Failed to install leaflet: '.$result->errorOutput());
                 }
 
                 return $result;

@@ -10,7 +10,7 @@ class AlertCvaService
     {
         return ClassVarianceAuthority::new(
             [
-                'mt-2 text-sm text-white p-4 rounded-lg'
+                'mt-2 text-sm text-white p-4 rounded-lg',
             ],
             [
                 'variants' => [
@@ -21,7 +21,7 @@ class AlertCvaService
                         'success' => 'bg-teal-500 text-white',
                         'danger' => 'bg-red-500 text-white',
                         'warning' => 'bg-yellow-500 text-white',
-                        'light' => 'bg-white text-gray-600'
+                        'light' => 'bg-white text-gray-600',
                     ],
 
                     'soft' => [
@@ -31,9 +31,9 @@ class AlertCvaService
                         'success' => 'bg-teal-100 border border-teal-200 text-teal-800 dark:bg-teal-800/10 dark:border-teal-900 dark:text-teal-500',
                         'danger' => 'bg-red-100 border border-red-200 text-red-800 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500',
                         'warning' => 'bg-yellow-100 border border-yellow-200 text-yellow-800 dark:bg-yellow-800/10 dark:border-yellow-900 dark:text-yellow-500',
-                        'light' => 'bg-white/10 border border-white/10 text-white'
-                    ]
-                ]
+                        'light' => 'bg-white/10 border border-white/10 text-white',
+                    ],
+                ],
             ]
         );
     }

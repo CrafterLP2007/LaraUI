@@ -6,16 +6,16 @@ use CrafterLP2007\LaraUi\Builder\NotificationBuilder;
 use CrafterLP2007\LaraUi\Collection\Collection;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Notifications extends Component
 {
     public Collection $notifications;
+
     protected $listeners = [
         'notificationSent' => ['pullNotifications', 'pushNotificationFromEvent'],
-        'notificationClosed' => 'removeNotification'
+        'notificationClosed' => 'removeNotification',
     ];
 
     #[On('notificationSent')]
@@ -56,7 +56,7 @@ class Notifications extends Component
         $this->dispatch('notification-added');
     }
 
-    public function getUser(): Model | Authenticatable | null
+    public function getUser(): Model|Authenticatable|null
     {
         return auth(static::$authGuard)->user();
     }

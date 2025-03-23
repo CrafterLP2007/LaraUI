@@ -5,8 +5,8 @@ namespace CrafterLP2007\LaraUi\Commands;
 use CrafterLP2007\LaraUi\Facades\LaraUi;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+
 use function Laravel\Prompts\multiselect;
-use function Laravel\Prompts\select;
 
 class InstallPluginCommand extends Command
 {
@@ -29,6 +29,7 @@ class InstallPluginCommand extends Command
 
             if (empty($availablePlugins)) {
                 $this->info('All plugins are already installed!');
+
                 return self::SUCCESS;
             }
 
@@ -42,13 +43,15 @@ class InstallPluginCommand extends Command
         }
 
         foreach ($selectedPlugins as $plugin) {
-            if (!$plugins->has($plugin)) {
+            if (! $plugins->has($plugin)) {
                 $this->error("Plugin '$plugin' not found!");
+
                 continue;
             }
 
             if ($plugins->get($plugin)->installed()) {
                 $this->warn("Plugin '$plugin' is already installed!");
+
                 continue;
             }
 
