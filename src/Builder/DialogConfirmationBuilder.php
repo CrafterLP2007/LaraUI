@@ -8,38 +8,51 @@ use Exception;
 class DialogConfirmationBuilder
 {
     protected string $id;
+
     protected mixed $component;
+
     protected string $title = '';
+
     protected string $message = '';
+
     protected $icon = null;
+
     protected $onConfirm = null;
+
     protected $onCancel = null;
+
     protected array $confirmParams = [];
+
     protected array $cancelParams = [];
+
     protected $closeButton = null;
+
     protected $confirmButton = null;
 
     public function __construct($component)
     {
         $this->component = $component;
-        $this->id = 'lara-ui-confirmation-dialog-' . md5(uniqid());
+        $this->id = 'lara-ui-confirmation-dialog-'.md5(uniqid());
     }
 
     public function title(string $title): static
     {
         $this->title = $title;
+
         return $this;
     }
 
     public function message(string $message): static
     {
         $this->message = $message;
+
         return $this;
     }
 
     public function icon(string $slot): static
     {
         $this->icon = $slot;
+
         return $this;
     }
 
@@ -75,31 +88,35 @@ class DialogConfirmationBuilder
 
     */
 
-    public function onConfirm(string|callable $method = null, array $params = []): static
+    public function onConfirm(string|callable|null $method = null, array $params = []): static
     {
         $this->onConfirm = $method;
 
         $this->confirmParams = $params;
+
         return $this;
     }
 
-    public function onCancel(string|callable $method = null, array $params = []): static
+    public function onCancel(string|callable|null $method = null, array $params = []): static
     {
         $this->onCancel = $method;
 
         $this->cancelParams = $params;
+
         return $this;
     }
 
     public function closeButton(string $slot): static
     {
         $this->closeButton = $slot;
+
         return $this;
     }
 
     public function confirmButton(string $slot): static
     {
         $this->confirmButton = $slot;
+
         return $this;
     }
 
@@ -136,9 +153,6 @@ class DialogConfirmationBuilder
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getComponent(): mixed
     {
         return $this->component;

@@ -7,14 +7,23 @@ use Illuminate\Contracts\View\View;
 class DialogConfirmationModal extends ModalComponent implements \CrafterLP2007\LaraUi\Contracts\ModalComponent
 {
     public string $id = '';
+
     public string $title = '';
+
     public string $message = '';
+
     public $icon = null;
+
     public $onConfirm = null;
+
     public $onCancel = null;
+
     public array $confirmParams = [];
+
     public array $cancelParams = [];
+
     public $closeButton = null;
+
     public $confirmButton = null;
 
     public function confirm(): void
@@ -43,6 +52,7 @@ class DialogConfirmationModal extends ModalComponent implements \CrafterLP2007\L
     {
         if ($this->cancelOnClose) {
             $this->cancel();
+
             return;
         }
 

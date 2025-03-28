@@ -15,8 +15,9 @@ trait WithDialogConfirmation
     #[On('dialog.confirmed')]
     public function onConfirm($event): void
     {
-        if (!isset($event['callback']) || $event['callback'] === null) {
+        if (! isset($event['callback']) || $event['callback'] === null) {
             $this->handleConfirmCallback($event['params'] ?? []);
+
             return;
         }
 
@@ -28,8 +29,9 @@ trait WithDialogConfirmation
     #[On('dialog.cancelled')]
     public function onCancel($event): void
     {
-        if (!isset($event['callback']) || $event['callback'] === null) {
+        if (! isset($event['callback']) || $event['callback'] === null) {
             $this->handleCancelCallback($event['params'] ?? []);
+
             return;
         }
 
@@ -42,17 +44,17 @@ trait WithDialogConfirmation
      * Handle the callback in a function when
      * user click on the confirm button
      *
-     * @param array $params
+     * @param  array  $params
      * @return void
      */
-    public function handleConfirmCallback(...$params){}
+    public function handleConfirmCallback(...$params) {}
 
     /**
      * Handle the callback in a function when
      * user click on the cancel button
      *
-     * @param array $params
+     * @param  array  $params
      * @return void
      */
-    public function handleCancelCallback(...$params){}
+    public function handleCancelCallback(...$params) {}
 }
