@@ -1,7 +1,7 @@
 @props([
     'content' => null,
     'position' => 'top',
-    'trigger' => 'click',
+    'trigger' => 'hover',
 ])
 
 @php

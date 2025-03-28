@@ -3,7 +3,9 @@
     'cornerHint' => null,
     'hint' => null,
     'showCurrentDate' => false,
-    'locale' => 'de-DE'
+    'locale' => 'de-DE',
+    'format' => 'dd.MM.yyyy',
+    'closeOnSelect' => false
 ])
 
 @if($label)
@@ -18,10 +20,181 @@
 @endif
 
 <div
-    x-data="datePicker(@entangle($attributes->wire('model')))"
-    x-init="init()"
+    x-data="{
+        showDatepicker: false,
+        dateValue: null,
+        month: '',
+        year: '',
+        days: [],
+        blankdays: [],
+        modelValue: @entangle($attributes->wire('model')),
+        format: '{{ $format }}',
+        closeOnSelect: {{ $closeOnSelect ? 'true' : 'false' }},
+        showCurrentDate: {{ $showCurrentDate ? 'true' : 'false' }},
+        weekDays: {{ json_encode([
+            __('lara-ui::date.weeks.monday'),
+            __('lara-ui::date.weeks.tuesday'),
+            __('lara-ui::date.weeks.wednesday'),
+            __('lara-ui::date.weeks.thursday'),
+            __('lara-ui::date.weeks.friday'),
+            __('lara-ui::date.weeks.saturday'),
+            __('lara-ui::date.weeks.sunday')
+        ]) }},
+        monthNames: {{ json_encode([
+            __('lara-ui::date.months.january'),
+            __('lara-ui::date.months.february'),
+            __('lara-ui::date.months.march'),
+            __('lara-ui::date.months.april'),
+            __('lara-ui::date.months.may'),
+            __('lara-ui::date.months.june'),
+            __('lara-ui::date.months.july'),
+            __('lara-ui::date.months.august'),
+            __('lara-ui::date.months.september'),
+            __('lara-ui::date.months.october'),
+            __('lara-ui::date.months.november'),
+            __('lara-ui::date.months.december')
+        ]) }},
+
+        init() {
+            try {
+                const today = new Date();
+                this.month = today.getMonth();
+                this.year = today.getFullYear();
+
+                // Check if we have an initial value from Livewire
+                if (this.modelValue) {
+                    const value = String(this.modelValue); // Ensure it's a string
+                    if (value && value.includes('-')) {
+                        const parts = value.split('-');
+                        if (parts.length === 3) {
+                            const [y, m, d] = parts.map(Number);
+                            const date = new Date(y, m - 1, d);
+
+                            if (this.isValidDate(date)) {
+                                this.dateValue = date;
+                                this.month = date.getMonth();
+                                this.year = date.getFullYear();
+                            }
+                        }
+                    }
+                }
+
+                this.calculateDays();
+
+                // Watch for model changes
+                this.$watch('modelValue', value => {
+                    if (value && value.includes('-')) {
+                        const parts = value.split('-');
+                        if (parts.length === 3) {
+                            const [y, m, d] = parts.map(Number);
+                            const date = new Date(y, m - 1, d);
+                            if (this.isValidDate(date)) {
+                                this.dateValue = date;
+                            }
+                        }
+                    } else {
+                        this.dateValue = null;
+                    }
+                });
+            } catch (e) {
+                console.error('Date initialization error:', e);
+                const today = new Date();
+                this.month = today.getMonth();
+                this.year = today.getFullYear();
+                this.calculateDays();
+            }
+        },
+
+        calculateDays() {
+            let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+            let firstDayOfMonth = new Date(this.year, this.month, 1);
+            let firstDayWeekday = firstDayOfMonth.getDay() || 7;
+
+            this.blankdays = Array(firstDayWeekday - 1).fill(null);
+            this.days = Array.from({length: daysInMonth}, (_, i) => i + 1);
+        },
+
+        isSelectedDate(date) {
+            if (!this.dateValue) return false;
+            return date === this.dateValue.getDate() &&
+                this.month === this.dateValue.getMonth() &&
+                this.year === this.dateValue.getFullYear();
+        },
+
+        isToday(date) {
+            const today = new Date();
+            return date === today.getDate() &&
+                this.month === today.getMonth() &&
+                this.year === today.getFullYear();
+        },
+
+        formatDate(date) {
+            if (!date) return '';
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            return this.format
+                .replace('dd', day)
+                .replace('MM', month)
+                .replace('yyyy', year)
+                .replace('yy', year.toString().slice(-2));
+        },
+
+        get formattedDate() {
+            return this.dateValue ? this.formatDate(this.dateValue) : '';
+        },
+
+        togglePicker() {
+            this.showDatepicker = !this.showDatepicker;
+        },
+
+        selectDate(date) {
+            try {
+                const newDate = new Date(this.year, this.month, date);
+                this.dateValue = newDate;
+
+                // Update the wire model
+                const year = newDate.getFullYear();
+                const month = String(newDate.getMonth() + 1).padStart(2, '0');
+                const day = String(newDate.getDate()).padStart(2, '0');
+                this.modelValue = `${year}-${month}-${day}`;
+
+                if (this.closeOnSelect) {
+                    this.showDatepicker = false;
+                }
+            } catch (e) {
+                console.error('Date selection error:', e);
+            }
+        },
+
+        isValidDate(date) {
+            return date instanceof Date && !isNaN(date.getTime());
+        },
+
+        previousMonth() {
+            if (this.month === 0) {
+                this.year--;
+                this.month = 11;
+            } else {
+                this.month--;
+            }
+            this.calculateDays();
+        },
+
+        nextMonth() {
+            if (this.month === 11) {
+                this.year++;
+                this.month = 0;
+            } else {
+                this.month++;
+            }
+            this.calculateDays();
+        }
+    }"
     class="relative"
-    wire:ignore
+    wire:ignore.self
 >
     <input
         type="text"
@@ -29,10 +202,11 @@
         x-ref="input"
         @click="togglePicker"
         @keydown.escape="showDatepicker = false"
+        role="textbox"
+        aria-readonly="true"
         {{ $attributes->class([
-            'py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-600 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:border-blue-500 dark:focus:ring-neutral-500'
+            'py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-600 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:border-blue-500 dark:focus:ring-neutral-500 cursor-pointer'
         ])->whereDoesntStartWith('wire:model') }}
-        {{ $attributes }}
         readonly
     >
 
@@ -104,110 +278,3 @@
     <div
         class="text-red-600 text-sm">{{ $errors->first($attributes->whereStartsWith('wire:model')->first()) }}</div>
 @endif
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('datePicker', (modelValue) => ({
-            showDatepicker: false,
-            dateValue: null,
-            month: '',
-            year: '',
-            days: [],
-            blankdays: [],
-            showCurrentDate: {{ $showCurrentDate ? 'true' : 'false' }},
-            weekDays: {!! json_encode([
-                    __('lara-ui::date.weeks.monday'),
-                    __('lara-ui::date.weeks.tuesday'),
-                    __('lara-ui::date.weeks.wednesday'),
-                    __('lara-ui::date.weeks.thursday'),
-                    __('lara-ui::date.weeks.friday'),
-                    __('lara-ui::date.weeks.saturday'),
-                    __('lara-ui::date.weeks.sunday')
-                ]) !!},
-            monthNames: {!! json_encode([
-                    __('lara-ui::date.months.january'),
-                    __('lara-ui::date.months.february'),
-                    __('lara-ui::date.months.march'),
-                    __('lara-ui::date.months.april'),
-                    __('lara-ui::date.months.may'),
-                    __('lara-ui::date.months.june'),
-                    __('lara-ui::date.months.july'),
-                    __('lara-ui::date.months.august'),
-                    __('lara-ui::date.months.september'),
-                    __('lara-ui::date.months.october'),
-                    __('lara-ui::date.months.november'),
-                    __('lara-ui::date.months.december')
-                ]) !!},
-
-            init() {
-                const today = new Date();
-                this.month = today.getMonth();
-                this.year = today.getFullYear();
-
-                if (modelValue) {
-                    const date = new Date(modelValue);
-                    this.dateValue = isNaN(date.getTime()) ? null : date;
-                }
-
-                this.calculateDays();
-            },
-
-            calculateDays() {
-                let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-                let firstDayOfMonth = new Date(this.year, this.month, 1);
-                let firstDayWeekday = firstDayOfMonth.getDay() || 7;
-
-                this.blankdays = Array(firstDayWeekday - 1).fill(null);
-                this.days = Array.from({length: daysInMonth}, (_, i) => i + 1);
-            },
-
-            isSelectedDate(date) {
-                if (!this.dateValue) return false;
-                return date === this.dateValue.getDate() &&
-                    this.month === this.dateValue.getMonth() &&
-                    this.year === this.dateValue.getFullYear();
-            },
-
-            isToday(date) {
-                const today = new Date();
-                return date === today.getDate() &&
-                    this.month === today.getMonth() &&
-                    this.year === today.getFullYear();
-            },
-
-            get formattedDate() {
-                return this.dateValue ? this.dateValue.toLocaleDateString('{{ $locale }}') : '';
-            },
-
-            togglePicker() {
-                this.showDatepicker = !this.showDatepicker;
-            },
-
-            selectDate(date) {
-                const newDate = new Date(this.year, this.month, date);
-                this.dateValue = newDate;
-                modelValue = this.dateValue.toISOString().split('T')[0];
-            },
-
-            previousMonth() {
-                if (this.month === 0) {
-                    this.year--;
-                    this.month = 11;
-                } else {
-                    this.month--;
-                }
-                this.calculateDays();
-            },
-
-            nextMonth() {
-                if (this.month === 11) {
-                    this.year++;
-                    this.month = 0;
-                } else {
-                    this.month++;
-                }
-                this.calculateDays();
-            }
-        }))
-    });
-</script>

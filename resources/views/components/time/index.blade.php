@@ -2,17 +2,18 @@
     'label' => null,
     'hint' => null,
     'showValidation' => true,
-    'format24' => true,
+    'format24' => false,
 ])
 
 <div
     x-data="{
+        id: Math.random().toString(20).substring(2, 20),
         hour: '',
         minute: '',
         ampm: 'am',
         isOpen: false,
         format24: {{ $format24 ? 'true' : 'false' }},
-        formattedTime: '',
+        formattedTime: @entangle($attributes->wire('model')),
 
         setCurrentTime() {
             const now = new Date();
@@ -41,6 +42,14 @@
         },
 
         init() {
+            if (this.formattedTime) {
+                const [time, period] = this.formattedTime.split(' ');
+                const [h, m] = time.split(':');
+                this.hour = h;
+                this.minute = m;
+                this.ampm = period || 'am';
+            }
+
             this.$watch('hour', () => this.updateFormattedTime());
             this.$watch('minute', () => this.updateFormattedTime());
             this.$watch('ampm', () => this.updateFormattedTime());
@@ -96,14 +105,21 @@
                                 @if(!$format24 && $h === 0)
                                     @continue
                                 @endif
-                                <label
-                                    for="hour-{{ $h }}"
-                                    class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-                                    :class="{ 'bg-blue-600 text-white': hour === '{{ sprintf('%02d', $h) }}' }"
-                                >
-                                    <input type="radio" id="hour-{{ $h }}" name="hour" value="{{ sprintf('%02d', $h) }}" x-model="hour" class="sr-only">
-                                    <span class="block">{{ sprintf('%02d', $h) }}</span>
-                                </label>
+                                    <label
+                                        :for="'hour-' + id + '-' + {{ $h }}"
+                                        class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+                                        :class="{ 'bg-blue-600 text-white': hour === '{{ sprintf('%02d', $h) }}' }"
+                                    >
+                                        <input
+                                            type="radio"
+                                            :id="'hour-' + id + '-' + {{ $h }}"
+                                            :name="'hour-' + id"
+                                            value="{{ sprintf('%02d', $h) }}"
+                                            x-model="hour"
+                                            class="sr-only"
+                                        >
+                                        <span class="block">{{ sprintf('%02d', $h) }}</span>
+                                    </label>
                             @endforeach
                         </div>
 
@@ -111,11 +127,18 @@
                         <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                             @foreach(range(0, 59) as $m)
                                 <label
-                                    for="minute-{{ $m }}"
+                                    :for="'minute-' + id + '-' + {{ $m }}"
                                     class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
                                     :class="{ 'bg-blue-600 text-white': minute === '{{ sprintf('%02d', $m) }}' }"
                                 >
-                                    <input type="radio" id="minute-{{ $m }}" name="minute" value="{{ sprintf('%02d', $m) }}" x-model="minute" class="sr-only">
+                                    <input
+                                        type="radio"
+                                        :id="'minute-' + id + '-' + {{ $m }}"
+                                        :name="'minute-' + id"
+                                        value="{{ sprintf('%02d', $m) }}"
+                                        x-model="minute"
+                                        class="sr-only"
+                                    >
                                     <span class="block">{{ sprintf('%02d', $m) }}</span>
                                 </label>
                             @endforeach
@@ -159,8 +182,6 @@
             </div>
         </div>
     </div>
-
-    <input type="hidden" x-model="formattedTime" {{ $attributes->only(['wire:model', 'wire:model.live', 'wire:model.blur', 'wire:model.defer', 'name']) }} />
 
     @if($hint)
         <p class="mt-2 text-sm text-gray-500 dark:text-neutral-500">{{ $hint }}</p>

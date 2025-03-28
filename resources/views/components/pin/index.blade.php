@@ -54,9 +54,6 @@
     @if($label)
         <div class="flex justify-between items-center mb-2">
             <label class="block text-sm dark:text-white">{{ $label }}</label>
-            @if($cornerHint)
-                <span class="text-sm text-gray-500 dark:text-neutral-400">{{ $cornerHint }}</span>
-            @endif
         </div>
     @endif
 

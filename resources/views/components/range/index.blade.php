@@ -54,5 +54,4 @@
         <div
             class="text-red-600 text-sm">{{ $errors->first($attributes->whereStartsWith('wire:model')->first()) }}</div>
     @endif
-
 </div>

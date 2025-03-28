@@ -1,6 +1,6 @@
 @props([
     'language' => 'blade',
-    'content' => '',
+    'contents' => '',
     'previewClasses' => '',
     'codeClasses' => '',
     'withCopy' => true,
@@ -13,16 +13,16 @@
         <div class="flex bg-gray-100 rounded-lg p-0.5 dark:bg-neutral-800">
             <nav class="flex gap-x-0.5 md:gap-x-1" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
                 <button @click="showCode = false" type="button"
-                        class="hs-tab-active:bg-white hs-tab-active:text-gray-800 hs-tab-active:shadow-sm hs-tab-active:hover:border-transparent hs-tab-active:focus:border-transparent text-xs md:text-[13px] text-gray-800 border border-transparent hover:border-gray-400 focus:outline-hidden focus:border-gray-400 font-medium rounded-md px-1.5 sm:px-2 py-2 dark:text-neutral-200 dark:hover:text-white dark:hover:border-neutral-500 dark:focus:text-white dark:focus:border-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:text-neutral-200 dark:hs-tab-active:hover:border-transparent dark:hs-tab-active:focus:border-transparent active"
-                        id="types-tab-preview-item" aria-selected="true" data-hs-tab="#types-tab-preview"
+                        :class="{ 'bg-white text-gray-800 shadow-sm hover:border-transparent focus:border-transparent dark:bg-neutral-700 dark:text-neutral-200 dark:hover:border-transparent dark:focus:border-transparent' : !showCode}"
+                        class="text-xs md:text-[13px] text-gray-800 border border-transparent hover:border-gray-400 focus:outline-hidden focus:border-gray-400 font-medium rounded-md px-1.5 sm:px-2 py-2 dark:text-neutral-200 dark:hover:text-white dark:hover:border-neutral-500 dark:focus:text-white dark:focus:border-neutral-500 dark:text-white"
                         aria-controls="types-tab-preview" role="tab">
                     Preview
                 </button>
                 <button @click="showCode = true" type="button"
-                        class="hs-tab-active:bg-white hs-tab-active:text-gray-800 hs-tab-active:shadow-sm hs-tab-active:hover:border-transparent hs-tab-active:focus:border-transparent text-xs md:text-[13px] text-gray-800 border border-transparent hover:border-gray-400 focus:outline-hidden focus:border-gray-400 font-medium rounded-md px-1.5 sm:px-2 py-2 dark:text-neutral-200 dark:hover:text-white dark:hover:border-neutral-500 dark:focus:text-white dark:focus:border-neutral-500 dark:hs-tab-active:bg-neutral-700 dark:hs-tab-active:text-neutral-200 dark:hs-tab-active:hover:border-transparent dark:hs-tab-active:focus:border-transparent"
-                        id="types-tab-html-item" aria-selected="false" data-hs-tab="#types-tab-html"
+                        :class="{ 'bg-white text-gray-800 shadow-sm hover:border-transparent focus:border-transparent dark:bg-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:border-transparent dark:focus:border-transparent' : showCode}"
+                        class="text-xs md:text-[13px] text-gray-800 border border-transparent hover:border-gray-400 focus:outline-hidden focus:border-gray-400 font-medium rounded-md px-1.5 sm:px-2 py-2 dark:text-neutral-200 dark:hover:text-white dark:hover:border-neutral-500 dark:focus:text-white dark:focus:border-neutral-500 dark:text-white"
                         aria-controls="types-tab-html" role="tab">
-                    HTML
+                    Code
                 </button>
             </nav>
         </div>
@@ -33,7 +33,7 @@
         @if($slot->isNotEmpty())
             {{ $slot }}
         @else
-            {!! Blade::render($content) !!}
+            {!! Blade::render($contents) !!}
         @endif
     </div>
 
@@ -44,16 +44,21 @@
             @if($withCopy)
                 <div class="absolute right-0 top-0">
                     <x-lara-ui::clipboard
-                        :text="$content"
+                        :text="$contents"
                     />
                 </div>
             @endif
+
+            @php
+                $contents ??= $slot->toHtml();
+            @endphp
+
             <x-torchlight-code
                 x-ref="codeContent"
                 class="my-6 [&_.line-number]:text-white [&_.line-number]:pr-4"
                 style="color: white;"
                 :language="$language"
-                :contents="$content"
+                :$contents
             />
         </div>
     </div>

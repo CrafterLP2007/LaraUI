@@ -7,7 +7,6 @@
             'text-blue-600 hover:text-blue-600 focus:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 dark:focus:text-blue-500': selectedAccordionItem === uuid,
             'text-gray-800 hover:text-gray-500 focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400': selectedAccordionItem !== uuid
         }">
-    {{-- Plus icon --}}
     <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
          :class="selectedAccordionItem === uuid ? 'hidden' : 'block'"
          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -15,7 +14,6 @@
         <path d="M5 12h14"></path>
         <path d="M12 5v14"></path>
     </svg>
-    {{-- Minus icon --}}
     <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
          :class="selectedAccordionItem === uuid ? 'block' : 'hidden'"
          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

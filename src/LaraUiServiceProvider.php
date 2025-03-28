@@ -4,6 +4,7 @@ namespace CrafterLP2007\LaraUi;
 
 use CrafterLP2007\LaraUi\Commands\InstallPluginCommand;
 use CrafterLP2007\LaraUi\Commands\ReloadCommand;
+use CrafterLP2007\LaraUi\Livewire\Modal\DialogConfirmationModal;
 use CrafterLP2007\LaraUi\Livewire\Modal\ModalComponent;
 use CrafterLP2007\LaraUi\Livewire\Notification\Notifications;
 use Illuminate\Support\Facades\Blade;
@@ -36,6 +37,7 @@ class LaraUiServiceProvider extends PackageServiceProvider
     public function bootingPackage()
     {
         Livewire::component('lara-ui::modal', ModalComponent::class);
+        Livewire::component('lara-ui::dialog-confirmation-modal', DialogConfirmationModal::class);
     }
 
     public function packageBooted(): void
