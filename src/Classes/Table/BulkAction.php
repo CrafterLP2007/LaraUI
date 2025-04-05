@@ -8,6 +8,7 @@ use Livewire\Wireable;
 class BulkAction implements Wireable
 {
     private string $label;
+
     private string $actionSerialized;
 
     public function __construct(string $label, callable $action)
@@ -29,6 +30,7 @@ class BulkAction implements Wireable
     public function execute($rows)
     {
         $action = unserialize($this->actionSerialized)->getClosure();
+
         return $action($rows);
     }
 
@@ -36,14 +38,15 @@ class BulkAction implements Wireable
     {
         return [
             'label' => $this->label,
-            'actionSerialized' => $this->actionSerialized
+            'actionSerialized' => $this->actionSerialized,
         ];
     }
 
     public static function fromLivewire($value)
     {
-        $instance = new static($value['label'], function(){});
+        $instance = new static($value['label'], function () {});
         $instance->actionSerialized = $value['actionSerialized'];
+
         return $instance;
     }
 }

@@ -9,10 +9,10 @@ class BooleanFilter extends Filter
         $this->type = 'select';
         $this->options = [
             'true' => 'Yes',
-            'false' => 'No'
+            'false' => 'No',
         ];
 
-        $this->filter(function(Builder $builder, $value) {
+        $this->filter(function (Builder $builder, $value) {
             if ($value === 'true') {
                 $builder->whereNotNull($this->key);
             } elseif ($value === 'false') {
@@ -24,18 +24,21 @@ class BooleanFilter extends Filter
     public function allLabel(string $label): static
     {
         $this->options[''] = $label;
+
         return $this;
     }
 
     public function trueLabel(string $label): static
     {
         $this->options['true'] = $label;
+
         return $this;
     }
 
     public function falseLabel(string $label): static
     {
         $this->options['false'] = $label;
+
         return $this;
     }
 }

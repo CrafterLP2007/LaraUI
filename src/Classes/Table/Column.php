@@ -10,15 +10,23 @@ use Livewire\Wireable;
 class Column implements Wireable
 {
     public string $label;
+
     public ?string $key;
+
     public bool $sortable = false;
+
     public bool $searchable = false;
+
     public bool $hidden = false;
+
     public bool $html = false;
+
     private ?string $formatSerialized = null;
+
     private ?string $labelCallbackSerialized = null;
 
     private ?Closure $format = null;
+
     private string|null|Closure $labelCallback = null;
 
     private function __construct(string $label, ?string $key = null)
@@ -35,12 +43,14 @@ class Column implements Wireable
     public function sortable(bool $sortable = true): static
     {
         $this->sortable = $sortable;
+
         return $this;
     }
 
     public function searchable(bool $searchable = true): static
     {
         $this->searchable = $searchable;
+
         return $this;
     }
 
@@ -52,6 +62,7 @@ class Column implements Wireable
         } catch (PhpVersionNotSupportedException $e) {
             $this->formatSerialized = serialize($callback);
         }
+
         return $this;
     }
 
@@ -63,18 +74,21 @@ class Column implements Wireable
         } catch (PhpVersionNotSupportedException $e) {
             $this->labelCallbackSerialized = serialize($callback);
         }
+
         return $this;
     }
 
     public function html(): static
     {
         $this->html = true;
+
         return $this;
     }
 
     public function hidden(bool $enabled = true): static
     {
         $this->hidden = $enabled;
+
         return $this;
     }
 
@@ -82,10 +96,11 @@ class Column implements Wireable
     {
         if ($this->labelCallbackSerialized) {
             $callback = unserialize($this->labelCallbackSerialized)->getClosure();
+
             return $callback($model);
         }
 
-        if (!$this->key) {
+        if (! $this->key) {
             return '';
         }
 
@@ -96,7 +111,7 @@ class Column implements Wireable
             $value = $callback($value, $model);
         }
 
-        if (!$this->html) {
+        if (! $this->html) {
             $value = e($value);
         }
 
@@ -107,8 +122,10 @@ class Column implements Wireable
     {
         if ($this->labelCallbackSerialized && $model) {
             $callback = unserialize($this->labelCallbackSerialized)->getClosure();
+
             return $callback($model);
         }
+
         return $this->label;
     }
 
@@ -122,7 +139,7 @@ class Column implements Wireable
             'hidden' => $this->hidden,
             'html' => $this->html,
             'formatSerialized' => $this->formatSerialized,
-            'labelCallbackSerialized' => $this->labelCallbackSerialized
+            'labelCallbackSerialized' => $this->labelCallbackSerialized,
         ];
     }
 
@@ -135,6 +152,7 @@ class Column implements Wireable
         $instance->html = $value['html'];
         $instance->formatSerialized = $value['formatSerialized'];
         $instance->labelCallbackSerialized = $value['labelCallbackSerialized'];
+
         return $instance;
     }
 }

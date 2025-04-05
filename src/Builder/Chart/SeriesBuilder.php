@@ -5,36 +5,43 @@ namespace CrafterLP2007\LaraUi\Builder\Chart;
 class SeriesBuilder
 {
     protected string $name;
+
     protected array $data = [];
+
     protected array $labels = [];
+
     protected ?string $color = null;
 
     public static function make(string $name = ''): static
     {
-        return (new static())->name($name);
+        return (new static)->name($name);
     }
 
     public function name(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function color(string $color): static
     {
         $this->color = $color;
+
         return $this;
     }
 
     public function data(array $data): static
     {
         $this->data = $data;
+
         return $this;
     }
 
     public function labels(array $labels): static
     {
         $this->labels = $labels;
+
         return $this;
     }
 
@@ -42,6 +49,7 @@ class SeriesBuilder
     {
         $this->data[] = $value;
         $this->labels[] = $label;
+
         return $this;
     }
 
@@ -50,6 +58,7 @@ class SeriesBuilder
         foreach ($points as $label => $value) {
             $this->addPoint($label, $value);
         }
+
         return $this;
     }
 
@@ -57,7 +66,7 @@ class SeriesBuilder
     {
         $series = [
             'name' => $this->name,
-            'data' => $this->data
+            'data' => $this->data,
         ];
 
         if ($this->color !== null) {

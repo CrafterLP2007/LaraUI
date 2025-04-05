@@ -2,14 +2,14 @@
 
 namespace CrafterLP2007\LaraUi\Classes\Modal;
 
-use Livewire\Component;
 use CrafterLP2007\LaraUi\Contracts\ModalComponent as Contract;
+use Livewire\Component;
 
 abstract class ModalComponent extends Component implements Contract
 {
     public function closeModal(bool $force = false): void
     {
-        $this->dispatch("closeModal", force: $force);
+        $this->dispatch('closeModal', force: $force);
     }
 
     public function closeModalWithEvents(array $events): void
