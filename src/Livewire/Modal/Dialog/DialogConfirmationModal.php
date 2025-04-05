@@ -1,10 +1,11 @@
 <?php
 
-namespace CrafterLP2007\LaraUi\Livewire\Modal;
+namespace CrafterLP2007\LaraUi\Livewire\Modal\Dialog;
 
+use CrafterLP2007\LaraUi\Livewire\Modal\Modal;
 use Illuminate\Contracts\View\View;
 
-class DialogConfirmationModal extends ModalComponent implements \CrafterLP2007\LaraUi\Contracts\ModalComponent
+class DialogConfirmationModal extends Modal implements \CrafterLP2007\LaraUi\Contracts\ModalComponent
 {
     public string $id = '';
 
@@ -61,6 +62,6 @@ class DialogConfirmationModal extends ModalComponent implements \CrafterLP2007\L
 
     public function render(): View
     {
-        return view('lara-ui::livewire.components.modals.dialog-confirmation-modal');
+        return view('lara-ui::livewire.components.modals.dialog.dialog-confirmation-modal');
     }
 }

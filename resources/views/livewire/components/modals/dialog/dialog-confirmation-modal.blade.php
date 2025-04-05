@@ -21,10 +21,10 @@
 
                 <div class="grow">
                     <h3 class="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
-                        {{ $title }}
+                        {!!$title !!}
                     </h3>
                     <p class="text-gray-500 dark:text-neutral-500">
-                        {{ $message }}
+                        {!! $message !!}
                     </p>
                 </div>
             </div>

@@ -4,15 +4,15 @@ namespace CrafterLP2007\LaraUi;
 
 use CrafterLP2007\LaraUi\Commands\InstallPluginCommand;
 use CrafterLP2007\LaraUi\Commands\ReloadCommand;
-use CrafterLP2007\LaraUi\Livewire\Modal\DialogConfirmationModal;
-use CrafterLP2007\LaraUi\Livewire\Modal\ModalComponent;
+use CrafterLP2007\LaraUi\Livewire\Modal\Dialog\DialogConfirmationModal;
+use CrafterLP2007\LaraUi\Livewire\Modal\Modal;
 use CrafterLP2007\LaraUi\Livewire\Notification\Notifications;
+use CrafterLP2007\LaraUi\Livewire\OffCanvas\OffCanvas;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Component;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-
 use function Livewire\on;
 use function Livewire\store;
 
@@ -36,7 +36,8 @@ class LaraUiServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
-        Livewire::component('lara-ui::modal', ModalComponent::class);
+        Livewire::component('lara-ui::modal', Modal::class);
+        Livewire::component('lara-ui::offcanvas', OffCanvas::class);
         Livewire::component('lara-ui::dialog-confirmation-modal', DialogConfirmationModal::class);
     }
 
@@ -130,6 +131,28 @@ class LaraUiServiceProvider extends PackageServiceProvider
             }
 
             return null;
+        });
+
+        Blade::directive('larauiScripts', function () {
+            return "<?php
+        \$path = base_path('vendor/crafterlp2007/lara-ui/resources/js/app.js');
+        if (file_exists(\$path)) {
+            echo '<script>' . file_get_contents(\$path) . '</script>';
+        } else {
+            echo '<!-- LaraUI JS file not found at: ' . \$path . ' -->';
+        }
+    ?>";
+        });
+
+        Blade::directive('larauiStyles', function () {
+            return "<?php
+        \$path = base_path('vendor/crafterlp2007/lara-ui/resources/css/app.css');
+        if (file_exists(\$path)) {
+            echo '<style>' . file_get_contents(\$path) . '</style>';
+        } else {
+            echo '<!-- LaraUI CSS file not found at: ' . \$path . ' -->';
+        }
+    ?>";
         });
     }
 }

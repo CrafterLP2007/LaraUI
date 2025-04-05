@@ -2,6 +2,7 @@
 
 namespace CrafterLP2007\LaraUi\Livewire\Modal;
 
+use CrafterLP2007\LaraUi\Contracts\ModalComponent;
 use Exception;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,7 +14,7 @@ use Livewire\Mechanisms\ComponentRegistry;
 use ReflectionClass;
 use ReflectionProperty;
 
-class ModalComponent extends Component
+class Modal extends Component
 {
     public ?string $activeComponent;
 
@@ -28,7 +29,7 @@ class ModalComponent extends Component
     #[On('openModal')]
     public function openModal($component, $arguments = [], $modalAttributes = []): void
     {
-        $requiredInterface = \CrafterLP2007\LaraUi\Contracts\ModalComponent::class;
+        $requiredInterface = ModalComponent::class;
         $componentClass = app(ComponentRegistry::class)->getClass($component);
         $reflect = new ReflectionClass($componentClass);
 
@@ -46,8 +47,6 @@ class ModalComponent extends Component
             'name' => $component,
             'arguments' => $arguments,
             'modalAttributes' => array_merge([
-                'size' => 'small',
-                'animation' => 'scale',
                 'position' => 'center',
             ], $modalAttributes),
         ];
@@ -115,8 +114,6 @@ class ModalComponent extends Component
 
     public function render()
     {
-        return view('lara-ui::livewire.components.modals.modal', [
-            'js' => __DIR__.'../../../../resources/js/modal/modal.js',
-        ]);
+        return view('lara-ui::livewire.components.modals.modal');
     }
 }

@@ -82,7 +82,7 @@
         <button
             type="button"
             @click="open = !open"
-            class="relative w-full py-2.5 px-4 text-left text-sm text-gray-800 bg-white border border-gray-200 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300"
+            {{ $attributes->twMerge('relative w-full py-2.5 px-4 text-left text-sm text-gray-800 bg-white border border-gray-200 rounded-lg cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300') }}
             {{ $attributes->except(['wire:model', 'wire:model.live', 'wire:model.defer']) }}
         >
             <span x-text="getSelectedLabels()"></span>
@@ -103,7 +103,7 @@
             x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95"
-            class="absolute z-50 mt-1 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700"
+            class="absolute z-50 mt-1 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden dark:bg-neutral-900 dark:border-neutral-700"
             style="display: none;"
         >
             <template x-for="(option, index) in options" :key="index">

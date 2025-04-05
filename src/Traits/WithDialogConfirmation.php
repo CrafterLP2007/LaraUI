@@ -7,6 +7,11 @@ use Livewire\Attributes\On;
 
 trait WithDialogConfirmation
 {
+    /**
+     * Create a new dialog confirmation builder instance
+     *
+     * @return DialogConfirmationBuilder
+     */
     public function dialog(): DialogConfirmationBuilder
     {
         return new DialogConfirmationBuilder($this);

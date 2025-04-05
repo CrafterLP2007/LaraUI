@@ -1,27 +1,27 @@
-export const LaraUIModal = () => {
+export const LaraUIOffCanvas = () => {
     return {
         show: false,
         showActiveComponent: true,
         activeComponent: false,
         componentHistory: [],
-        modalSize: null,
+        position: 'left',
         listeners: [],
 
-        getActiveComponentModalAttribute(key) {
+        getActiveComponentAttribute(key) {
             if (this.$wire.get('components')[this.activeComponent] !== undefined) {
-                return this.$wire.get('components')[this.activeComponent]['modalAttributes'][key];
+                return this.$wire.get('components')[this.activeComponent]['attributes'][key];
             }
         },
 
-        closeModal(force = false, skipPreviousModals = 0, destroySkipped = false) {
+        closeOffcanvas(force = false, skipPreviousComponents = 0, destroySkipped = false) {
             if(this.show === false) {
                 return;
             }
 
             Livewire.dispatch('destroyComponent', {id: this.activeComponent});
 
-            if (skipPreviousModals > 0) {
-                for (var i = 0; i < skipPreviousModals; i++) {
+            if (skipPreviousComponents > 0) {
+                for (var i = 0; i < skipPreviousComponents; i++) {
                     if (destroySkipped) {
                         const id = this.componentHistory[this.componentHistory.length - 1];
                         Livewire.dispatch('destroyComponent', {id: id});
@@ -33,13 +33,13 @@ export const LaraUIModal = () => {
             const id = this.componentHistory.pop();
 
             if (id && !force) {
-                this.setActiveModalComponent(id, true);
+                this.setActiveComponentTo(id, true);
             } else {
                 this.setShowPropertyTo(false);
             }
         },
 
-        setActiveModalComponent(id, skip = false) {
+        setActiveComponentTo(id, skip = false) {
             this.setShowPropertyTo(true);
 
             if (this.activeComponent === id) {
@@ -55,7 +55,7 @@ export const LaraUIModal = () => {
             if (this.activeComponent === false) {
                 this.activeComponent = id;
                 this.showActiveComponent = true;
-                this.modalSize = this.getActiveComponentModalAttribute('size');
+                this.position = this.getActiveComponentAttribute('position');
             } else {
                 this.showActiveComponent = false;
 
@@ -64,7 +64,7 @@ export const LaraUIModal = () => {
                 setTimeout(() => {
                     this.activeComponent = id;
                     this.showActiveComponent = true;
-                    this.modalSize = this.getActiveComponentModalAttribute('size');
+                    this.position = this.getActiveComponentAttribute('position');
                 }, 300);
             }
 
@@ -94,17 +94,17 @@ export const LaraUIModal = () => {
         },
 
         init() {
-            this.modalSize = this.getActiveComponentModalAttribute('size');
+            this.position = this.getActiveComponentAttribute('position');
 
             this.listeners.push(
-                Livewire.on('closeModal', (data) => {
-                    this.closeModal(data?.force ?? false, data?.skipPreviousModals ?? 0, data?.destroySkipped ?? false);
+                Livewire.on('closeOffcanvas', (data) => {
+                    this.closeOffcanvas(data?.force ?? false, data?.skipPreviousComponents ?? 0, data?.destroySkipped ?? false);
                 })
             );
 
             this.listeners.push(
-                Livewire.on('activeModalComponentChanged', ({id}) => {
-                    this.setActiveModalComponent(id);
+                Livewire.on('activeOffCanvasComponentChanged', ({id}) => {
+                    this.setActiveComponentTo(id);
                 })
             );
         },

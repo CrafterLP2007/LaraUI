@@ -1,22 +1,46 @@
-@props(['title'])
+@props(['title', 'position' => 'left'])
 
 <div
     x-cloak
     :id="id"
     x-show="open"
     x-transition:enter="transition-all duration-300"
-    x-transition:enter-start="-translate-x-full"
-    x-transition:enter-end="translate-x-0"
+    x-transition:enter-start="{{
+        match($position) {
+            'left' => '-translate-x-full',
+            'right' => 'translate-x-full',
+            'top' => '-translate-y-full',
+            'bottom' => 'translate-y-full',
+            default => '-translate-x-full'
+        }
+    }}"
+    x-transition:enter-end="translate-x-0 translate-y-0"
     x-transition:leave="transition-all duration-300"
-    x-transition:leave-start="translate-x-0"
-    x-transition:leave-end="-translate-x-full"
+    x-transition:leave-start="translate-x-0 translate-y-0"
+    x-transition:leave-end="{{
+        match($position) {
+            'left' => '-translate-x-full',
+            'right' => 'translate-x-full',
+            'top' => '-translate-y-full',
+            'bottom' => 'translate-y-full',
+            default => '-translate-x-full'
+        }
+    }}"
     role="dialog"
     tabindex="-1"
     :aria-labelledby="`${id}-label`"
-    {{ $attributes->merge(['class' => 'fixed top-0 start-0 h-full max-w-xs w-full z-80 bg-white border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700']) }}
+    {{ $attributes->merge(['class' =>
+        match($position) {
+            'left' => 'fixed top-0 start-0 h-full max-w-xs w-full border-e',
+            'right' => 'fixed top-0 end-0 h-full max-w-xs w-full border-s',
+            'top' => 'fixed top-0 start-0 h-64 w-full border-b',
+            'bottom' => 'fixed bottom-0 start-0 h-64 w-full border-t',
+            default => 'fixed top-0 start-0 h-full max-w-xs w-full border-e'
+        } . ' z-80 bg-white border-gray-200 dark:bg-neutral-800 dark:border-neutral-700'
+    ]) }}
 >
     <div class="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-neutral-700">
-        <h3 :id="`${id}-label`" class="font-bold text-gray-800 dark:text-white">{{ $title }}</h3>
+        <h3 :id="`${id}-label`" class="font-bold text-gray-800 dark:text-white">{!! $title !!}</h3>
         <button
             type="button"
             x-on:click="close"
