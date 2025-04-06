@@ -8,16 +8,22 @@ use Livewire\Wireable;
 class SpotlightItem implements Wireable
 {
     private string $id = '';
+
     private string $label = '';
+
     private string $icon = '';
+
     private string $suffix = '';
+
     private ?string $callbackSerialized = null;
+
     private bool $hidden = false;
+
     private string $category = '';
 
     public static function make(string $category): static
     {
-        $instance = new static();
+        $instance = new static;
 
         return $instance->category($category);
     }
@@ -25,36 +31,42 @@ class SpotlightItem implements Wireable
     public function category(string $category): static
     {
         $this->category = $category;
+
         return $this;
     }
 
     public function label(string $label): static
     {
         $this->label = $label;
+
         return $this;
     }
 
     public function icon(string $icon): static
     {
         $this->icon = $icon;
+
         return $this;
     }
 
     public function suffix(string $suffix): static
     {
         $this->suffix = $suffix;
+
         return $this;
     }
 
     public function action(callable $callback): static
     {
         $this->callbackSerialized = serialize(new SerializableClosure($callback));
+
         return $this;
     }
 
     public function hidden(bool $hidden = true): static
     {
         $this->hidden = $hidden;
+
         return $this;
     }
 
@@ -62,8 +74,10 @@ class SpotlightItem implements Wireable
     {
         if ($this->callbackSerialized) {
             $callback = unserialize($this->callbackSerialized)->getClosure();
+
             return $callback();
         }
+
         return null;
     }
 
@@ -74,10 +88,11 @@ class SpotlightItem implements Wireable
             $this->label,
             $this->icon,
             $this->suffix,
-            $this->hidden ? '1' : '0'
+            $this->hidden ? '1' : '0',
         ]);
 
         $this->id = md5($uniqueString);
+
         return $this;
     }
 
@@ -120,13 +135,13 @@ class SpotlightItem implements Wireable
             'suffix' => $this->suffix,
             'hidden' => $this->hidden,
             'category' => $this->category,
-            'callbackSerialized' => $this->callbackSerialized
+            'callbackSerialized' => $this->callbackSerialized,
         ];
     }
 
     public static function fromLivewire($value)
     {
-        $instance = new static();
+        $instance = new static;
         $instance->id = $value['id'];
         $instance->label = $value['label'];
         $instance->icon = $value['icon'];
@@ -134,6 +149,7 @@ class SpotlightItem implements Wireable
         $instance->hidden = $value['hidden'];
         $instance->category = $value['category'];
         $instance->callbackSerialized = $value['callbackSerialized'];
+
         return $instance;
     }
 }

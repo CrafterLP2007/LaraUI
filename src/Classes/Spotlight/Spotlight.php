@@ -7,11 +7,14 @@ use Exception;
 abstract class Spotlight
 {
     public bool $withHistory = true;
+
     public int $maxHistoryItems = 3;
+
     public int $maxItemsPerCategory = 5;
+
     public string $historySessionKey = 'spotlight.history';
 
-    public abstract function options(): array;
+    abstract public function options(): array;
 
     public function clearHistory(): void
     {
@@ -43,12 +46,12 @@ abstract class Spotlight
      */
     public static function register($class): void
     {
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             throw new Exception("Class $class does not exist.");
         }
 
-        if (!is_subclass_of($class, self::class)) {
-            throw new Exception("Class $class is not a subclass of " . self::class);
+        if (! is_subclass_of($class, self::class)) {
+            throw new Exception("Class $class is not a subclass of ".self::class);
         }
 
         if (app()->bound('spotlight.handler')) {

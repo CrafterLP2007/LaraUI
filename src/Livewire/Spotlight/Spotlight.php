@@ -3,23 +3,29 @@
 namespace CrafterLP2007\LaraUi\Livewire\Spotlight;
 
 use CrafterLP2007\LaraUi\Classes\Spotlight\SpotlightItem;
-use CrafterLP2007\LaraUi\Contracts\SpotlightComponent;
 use Exception;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\Mechanisms\ComponentRegistry;
 
 class Spotlight extends Component
 {
     public bool $open = false;
+
     private \CrafterLP2007\LaraUi\Classes\Spotlight\Spotlight $spotlight;
+
     public bool $withHistory = false;
+
     public string $historySessionKey = '';
+
     public int $maxHistoryItems = 3;
+
     public int $maxItemsPerCategory = 5;
+
     public ?string $searchTerm = null;
+
     public ?Collection $history = null;
+
     public ?Collection $items = null;
 
     #[On('toggleSpotlight')]
@@ -50,19 +56,18 @@ class Spotlight extends Component
 
     public function getFilteredItems(?string $category = null): Collection
     {
-        if (!$this->items) {
+        if (! $this->items) {
             return collect();
         }
 
         $items = $this->items;
 
         if ($category) {
-            $items = $items->filter(fn($item) => $item->getCategory() === $category);
+            $items = $items->filter(fn ($item) => $item->getCategory() === $category);
         }
 
         if ($this->searchTerm) {
-            return $items->filter(fn($item) =>
-            str_contains(strtolower($item->getLabel()), strtolower($this->searchTerm))
+            return $items->filter(fn ($item) => str_contains(strtolower($item->getLabel()), strtolower($this->searchTerm))
             );
         }
 
@@ -71,12 +76,12 @@ class Spotlight extends Component
 
     public function getCategories(): array
     {
-        if (!$this->items) {
+        if (! $this->items) {
             return [];
         }
 
         return $this->items
-            ->map(fn($item) => $item->getCategory())
+            ->map(fn ($item) => $item->getCategory())
             ->unique()
             ->values()
             ->toArray();
@@ -84,11 +89,11 @@ class Spotlight extends Component
 
     public function select($id)
     {
-        $item = $this->items->first(function($item) use ($id) {
+        $item = $this->items->first(function ($item) use ($id) {
             return $item->getId() === $id;
         });
 
-        if (!$item) {
+        if (! $item) {
             throw new Exception("SpotlightItem with ID {$id} not found");
         }
 
@@ -121,7 +126,7 @@ class Spotlight extends Component
         $history = session()->get($this->historySessionKey, []);
         $newId = $item->getId();
 
-        if (!empty($history) && $history[0] === $newId) {
+        if (! empty($history) && $history[0] === $newId) {
             return;
         }
 
