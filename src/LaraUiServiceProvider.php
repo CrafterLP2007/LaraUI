@@ -14,6 +14,7 @@ use Livewire\Component;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+
 use function Livewire\on;
 use function Livewire\store;
 

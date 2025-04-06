@@ -7,32 +7,42 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Queue\SerializesAndRestoresModelIdentifiers;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 abstract class TableComponent extends Component
 {
-    use WithPagination, SerializesAndRestoresModelIdentifiers;
+    use SerializesAndRestoresModelIdentifiers, WithPagination;
 
     public array $columns = [];
+
     public array $selected = [];
+
     public string $search = '';
+
     public array $activeFilters = [];
+
     protected TableOptions $options;
+
     public bool $selectAll = false;
+
     public int $perPage = 10;
+
     public string $sortField = '';
+
     public string $sortDirection = 'asc';
 
     abstract public function query(): Builder;
+
     abstract public function columns(): array;
 
-    public function filters(): array {
+    public function filters(): array
+    {
         return [];
     }
 
-    public function bulkActions(): array {
+    public function bulkActions(): array
+    {
         return [];
     }
 
@@ -63,6 +73,7 @@ abstract class TableComponent extends Component
                         }
                     }
                 }
+
                 return false;
             });
 
@@ -83,18 +94,19 @@ abstract class TableComponent extends Component
                 $filter->apply($query, $value);
             }
         }
+
         return $query;
     }
 
     public function updatedSelectAll($value): void
     {
-        $this->selected = $value ? $this->query()->pluck('id')->map(fn($id) => (string) $id)->toArray() : [];
+        $this->selected = $value ? $this->query()->pluck('id')->map(fn ($id) => (string) $id)->toArray() : [];
     }
 
     public function executeBulkAction(string $actionLabel): void
     {
-        $action = collect($this->bulkActions())->first(fn($action) => $action->getLabel() === $actionLabel);
-        if ($action && !empty($this->selected)) {
+        $action = collect($this->bulkActions())->first(fn ($action) => $action->getLabel() === $actionLabel);
+        if ($action && ! empty($this->selected)) {
             $rows = $this->query()->get();
             $action->execute($rows);
             $this->selected = [];
@@ -125,6 +137,7 @@ abstract class TableComponent extends Component
         if ($this->sortField) {
             $query->orderBy($this->sortField, $this->sortDirection);
         }
+
         return $query;
     }
 
@@ -144,9 +157,10 @@ abstract class TableComponent extends Component
     public function getDataProperty(): LengthAwarePaginator
     {
         $query = $this->applySort($this->applyFilters($this->applySearch($this->query())));
-        $this->columns = collect($this->columns())->filter(fn($column) => !$column->hidden)->toArray();
+        $this->columns = collect($this->columns())->filter(fn ($column) => ! $column->hidden)->toArray();
 
         $perPage = $this->perPage ?? $this->options->perPageOptions[0];
+
         return $query->paginate($perPage);
     }
 
@@ -170,7 +184,7 @@ abstract class TableComponent extends Component
             'data' => $this->data,
             'columns' => $this->columns,
             'options' => $this->options,
-            'bulkActions' => $this->bulkActions()
+            'bulkActions' => $this->bulkActions(),
         ]);
     }
 }

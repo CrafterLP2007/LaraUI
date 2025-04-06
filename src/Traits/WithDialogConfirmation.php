@@ -9,8 +9,6 @@ trait WithDialogConfirmation
 {
     /**
      * Create a new dialog confirmation builder instance
-     *
-     * @return DialogConfirmationBuilder
      */
     public function dialog(): DialogConfirmationBuilder
     {

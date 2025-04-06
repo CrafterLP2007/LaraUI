@@ -2,14 +2,14 @@
 
 namespace CrafterLP2007\LaraUi\Classes\OffCanvas;
 
-use Livewire\Component;
 use CrafterLP2007\LaraUi\Contracts\OffCanvasComponent as Contract;
+use Livewire\Component;
 
 abstract class OffCanvasComponent extends Component implements Contract
 {
     public function closeOffCanvas(bool $force = false): void
     {
-        $this->dispatch("closeOffCanvas", force: $force);
+        $this->dispatch('closeOffCanvas', force: $force);
     }
 
     public function closeOffCanvasWithEvents(array $events): void

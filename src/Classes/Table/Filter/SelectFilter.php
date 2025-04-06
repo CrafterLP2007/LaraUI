@@ -14,6 +14,7 @@ class SelectFilter extends Filter
     public function options(array $options): static
     {
         $this->options = $options;
+
         return $this;
     }
 }
