@@ -124,6 +124,7 @@ window.LaraUIOffCanvas = () => {
         activeComponent: false,
         componentHistory: [],
         position: 'left',
+        closeOnEscape: true,
         listeners: [],
 
         getActiveComponentAttribute(key) {
@@ -175,6 +176,7 @@ window.LaraUIOffCanvas = () => {
                 this.activeComponent = id;
                 this.showActiveComponent = true;
                 this.position = this.getActiveComponentAttribute('position');
+                this.closeOnEscape = this.getActiveComponentAttribute('closeOnEscape');
             } else {
                 this.showActiveComponent = false;
 
@@ -184,6 +186,7 @@ window.LaraUIOffCanvas = () => {
                     this.activeComponent = id;
                     this.showActiveComponent = true;
                     this.position = this.getActiveComponentAttribute('position');
+                    this.closeOnEscape = this.getActiveComponentAttribute('closeOnEscape');
                 }, 300);
             }
 
@@ -214,6 +217,7 @@ window.LaraUIOffCanvas = () => {
 
         init() {
             this.position = this.getActiveComponentAttribute('position');
+            this.closeOnEscape = this.getActiveComponentAttribute('closeOnEscape');
 
             this.listeners.push(
                 Livewire.on('closeOffcanvas', (data) => {
@@ -235,4 +239,3 @@ window.LaraUIOffCanvas = () => {
         }
     };
 }
-

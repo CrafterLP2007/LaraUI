@@ -16,8 +16,8 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-500/70 dark:bg-neutral-800/70 backdrop-blur-sm"
-            @click="setShowPropertyTo(false)"
+            class="fixed inset-0 bg-gray-500/70 dark:bg-neutral-800/70 backdrop-blur-lg"
+            @click="closeOnEscape ? setShowPropertyTo(false) : null"
         ></div>
 
         <!-- Offcanvas panel -->

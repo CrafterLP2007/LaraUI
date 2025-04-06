@@ -8,6 +8,7 @@ use CrafterLP2007\LaraUi\Livewire\Modal\Dialog\DialogConfirmationModal;
 use CrafterLP2007\LaraUi\Livewire\Modal\Modal;
 use CrafterLP2007\LaraUi\Livewire\Notification\Notifications;
 use CrafterLP2007\LaraUi\Livewire\OffCanvas\OffCanvas;
+use CrafterLP2007\LaraUi\Livewire\Spotlight\Spotlight;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Component;
 use Livewire\Livewire;
@@ -39,6 +40,7 @@ class LaraUiServiceProvider extends PackageServiceProvider
         Livewire::component('lara-ui::modal', Modal::class);
         Livewire::component('lara-ui::offcanvas', OffCanvas::class);
         Livewire::component('lara-ui::dialog-confirmation-modal', DialogConfirmationModal::class);
+        Livewire::component('lara-ui::spotlight', Spotlight::class);
     }
 
     public function packageBooted(): void

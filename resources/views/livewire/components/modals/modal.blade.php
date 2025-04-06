@@ -15,12 +15,11 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-500/70 dark:bg-neutral-800/70 backdrop-blur-sm"
-            @click="setShowPropertyTo(false)"
+            class="fixed inset-0 bg-gray-500/70 dark:bg-neutral-800/70 backdrop-blur-lg"
         ></div>
 
         <!-- Modal content container -->
-        <div class="flex items-center justify-center h-screen relative z-20">
+        <div class="flex items-center justify-center h-screen relative">
             <div
                 x-always-open="show && showActiveComponent"
                 x-show="show && showActiveComponent"

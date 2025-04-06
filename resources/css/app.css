@@ -156,3 +156,38 @@
 .slideOutRight { animation-name: slideOutRight; }
 .slideInUp { animation-name: slideInUp; }
 .slideOutUp { animation-name: slideOutUp; }
+
+.apexcharts-tooltip {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+}
+
+.dark .apexcharts-tooltip {
+    background: #262626 !important;
+    color: #e5e5e5 !important;
+    border: 1px solid #404040 !important;
+}
+
+.apexcharts-tooltip-title {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    margin-bottom: 5px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.dark .apexcharts-tooltip-title {
+    background: #262626 !important;
+    color: #e5e5e5 !important;
+    border-bottom: 1px solid #404040 !important;
+}
+
+.apexcharts-tooltip-text-y-value {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}

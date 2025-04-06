@@ -48,6 +48,7 @@ class OffCanvas extends Component
             'arguments' => $arguments,
             'attributes' => array_merge([
                 'position' => 'left',
+                'closeOnEscape' => true,
             ], $attributes),
         ];
 

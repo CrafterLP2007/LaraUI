@@ -34,14 +34,33 @@ class ChartBuilder
     {
         $this->isDark = $isDark;
 
-        if ($isDark) {
-            $this->config['tooltip'] = [
-                'theme' => 'dark',
-                'style' => [
-                    'background' => '#1f2937'
+        $this->config['tooltip'] = [
+            'theme' => false,
+            'x' => [
+                'show' => true,
+            ],
+            'y' => [
+                'title' => [
+                    'formatter' => 'function (seriesName) { return seriesName }'
                 ]
-            ];
-        }
+            ]
+        ];
+
+        $this->config['grid'] = [
+            'strokeDashArray' => 2,
+            'borderColor' => $isDark ? '#374151' : '#e5e7eb',
+        ];
+
+        $this->config['xaxis']['crosshairs'] = [
+            'show' => true,
+            'width' => 1,
+            'position' => 'back',
+            'stroke' => [
+                'color' => $isDark ? '#404040' : '#e5e7eb',
+                'width' => 1,
+                'dashArray' => 0
+            ]
+        ];
 
         return $this;
     }
@@ -78,16 +97,18 @@ class ChartBuilder
 
         // Set gradient for this series if color exists
         if ($color) {
+            $opacity = $this->isDark ? 0.15 : 0.4;
+
             $seriesData['fill'] = [
                 'type' => 'gradient',
                 'gradient' => [
                     'type' => 'vertical',
-                    'shadeIntensity' => 0,
-                    'gradientToColors' => ['#000000'],
-                    'inverseColors' => false,
-                    'opacityFrom' => $this->isDark ? 0.15 : 0.5,
-                    'opacityTo' => $this->isDark ? 0 : 0.3,
-                    'stops' => [0, 100]
+                    'gradientToColors' => ['transparent'],
+                    'opacityFrom' => $opacity,
+                    'opacityTo' => 0.02,
+                    'stops' => [0, 100],
+                    'shade' => 'light',
+                    'shadeIntensity' => 0
                 ]
             ];
 
